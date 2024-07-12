@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = "django-plottings"
 authors = [{name = "Jorge Monforte Gonzalez", email = "yo@llou.net"}]
-readme = "README.rst"
+readme = "README.md"
 dynamic = ["version", "description"]
 classifiers = [
 	"Development Status :: 3 - Alpha",
