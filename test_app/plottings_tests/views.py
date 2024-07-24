@@ -3,12 +3,15 @@ from datetime import date, timedelta
 from django.shortcuts import render
 from plottings.plots.activity import ActivityMap
 from plottings import (
+        SVGZPlotToFile,
+        PNGPlotToFile,
         PNGPlotView,
         SVGZPlotView,
         SVGPlotToValue,
         PNGBase64PlotToValue,
         )
 from .plots import activity_plot
+from .models import Plot
 
 
 class ActivityPlotMixin:
@@ -47,16 +50,36 @@ class PNGPlot(ActivityPlotMixin, PNGBase64PlotToValue):
     plotter_function = staticmethod(activity_plot)
 
 
-def view(request):
-    context = {"svg_data": SVGPlot().get_value(),
-               "png_data": PNGPlot().get_value()}
-
-    return render(request, "main.html", context)
-
-
 class PNGActivityPlot(ActivityPlotMixin, PNGPlotView):
     plotter_function = staticmethod(activity_plot)
 
 
 class SVGZActivityPlot(ActivityPlotMixin, SVGZPlotView):
     plotter_function = staticmethod(activity_plot)
+
+
+def main(request):
+    plots = Plot.objects.all()
+    context = {"svg_data": SVGPlot().get_value(),
+               "png_data": PNGPlot().get_value(),
+               "plots": plots}
+
+    return render(request, "main.html", context)
+
+
+class SVGZPlotToFile(ActivityPlotMixin, SVGZPlotToFile):
+    plotter_function = staticmethod(activity_plot)
+
+
+class PNGPlotToFile(ActivityPlotMixin, PNGPlotToFile):
+    plotter_function = staticmethod(activity_plot)
+
+
+def new_png(request):
+    data = SVGZPlotToFile().get_buffer()
+    plot = Plot()
+    return ""
+
+
+def new_svg(request):
+    return ""

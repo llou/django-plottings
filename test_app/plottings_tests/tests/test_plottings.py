@@ -1,11 +1,9 @@
 from typing import Any
 from base64 import b64decode
 from unittest import TestCase
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock, MagicMock
 from plottings.base import BasePlot
 from plottings import (
-        SVGPlotToFile,
-        PNGPlotToFile,
         PNGPlotView,
         SVGZPlotView,
         SVGPlotToValue,
@@ -54,10 +52,6 @@ class TextPlotterMixin(BasePlotterMixin):
     pass
 
 
-class SVGPlotToFilePlotterTestCase(TextPlotterMixin, TestCase):
-    pass
-
-
 class SVGPlotToValuePlotterTestCase(TextPlotterMixin, TestCase):
     pass
 
@@ -67,10 +61,6 @@ class SVGZPlotViewPlotterTestCase(BinaryPlotterMixin, TestCase):
 
 
 class PNGPlotViewPlotterTestCase(BinaryPlotterMixin, TestCase):
-    pass
-
-
-class PNGPlotToFilePlotterTestCase(BinaryPlotterMixin, TestCase):
     pass
 
 
@@ -119,10 +109,6 @@ class TextBufferMixin(BaseBufferMixin):
     file_type = "SVG"
 
 
-class SVGPlotToFileBufferTestCase(TextBufferMixin, TestCase):
-    tclass = SVGPlotToFile
-
-
 class SVGPlotToValueBufferTestCase(TextBufferMixin, TestCase):
     tclass = SVGPlotToValue
 
@@ -135,67 +121,15 @@ class PNGPlotViewBufferTestCase(BinaryBufferMixin, TestCase):
     tclass = PNGPlotView
 
 
-class PNGPlotToFileBufferTestCase(BinaryBufferMixin, TestCase):
-    tclass = PNGPlotToFile
-
-
 class PNGBase64PlotToValueTestCase(BinaryBufferMixin, TestCase):
     tclass = PNGBase64PlotToValue
 
 
 # TEST Explotation
 
-# Storages
-
-class BaseFileMixin:
-    tclass = BasePlot
-    filename = "filename"
-    output: Any = ""
-
-    def setUp(self):
-        super().setUp()
-
-        class MockPlot(self.tclass):
-            def get_filename(self2):
-                return self.filename
-
-            def get_buffer(self2):
-                self.buffer = self2.buffer_class()
-                self.buffer.write(self.output)
-                self.buffer.seek(0)
-                return self.buffer
-
-        self.patcher = patch('plottings.base.storages')
-        self.storages = self.patcher.start()
-
-        self.storage = MagicMock()
-        self.storages.__getitem__.return_value = self.storage
-        self.storage_save = Mock()
-        self.storage.save = self.storage_save
-
-        self.plot = MockPlot()
-
-    def test_file(self):
-        self.plot.save()
-        self.storages.__getitem__.assert_called_with(self.plot.storage_name)
-        self.storage_save.assert_called_with(self.filename,
-                                             self.buffer)
-
-    def tearDown(self):
-        self.patcher.stop()
-
-
-class PNGPlotToFileFileTestCase(BaseFileMixin, TestCase):
-    tclass = PNGPlotToFile
-    output = PLOT_BINARY
-
-
-class SVGPlotToFileFileTestCase(BaseFileMixin, TestCase):
-    tclass = SVGPlotToFile
-    output = PLOT_TEXT
-
 
 # Values
+
 
 class BaseValueMixin:
     tclass = BasePlot

@@ -58,4 +58,3 @@ DATABASES = {
         'NAME': '/tmp/plottings_test_db.sqlite3',
     }
 }
- 

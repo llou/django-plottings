@@ -1,13 +1,17 @@
 from io import BytesIO
+from typing import Any
 from django.views import View
 from django.http import HttpResponse
-from ..base import BasePlotMixin, SVGPlotMixin, PNGPlotMixin
+from ..base import BasePlot, SVGZPlotMixin, PNGPlotMixin
+
+# TODO Add cache Headers
 
 
 class BaseFileView(View):
-    buffer_class = BytesIO
+    buffer_class: Any = None
     file_format = ""
     filename = ""
+    encoding = ""
     disposition = ""  # values: inline, attachment
     mimetype = ""
     http_method_names = [
@@ -30,16 +34,28 @@ class BaseFileView(View):
     def get_mimetype(self):
         return self.mimetype
 
+    def get_encoding(self):
+        return self.encoding
+
     def get_headers(self):
-        name = self.get_filename()
+        result = {}
+
         disposition = self.get_disposition()
         if disposition:
-            return {"Content-Disposition": f'{disposition}; filename="{name}"'}
-        else:
-            return {}
+            if disposition == "inline":
+                result['Content-Disposition'] = 'inline'
+            else:
+                name = self.get_filename()
+                value = f'attrachment; filename="{name}"'
+                result['Content-Disposition'] = value
+
+        encoding = self.get_encoding()
+        if encoding:
+            result['Content-Encoding'] = encoding
+        return result
 
     def get_buffer(self):
-        return self.buffer_class()
+        raise NotImplementedError
 
     def get(self, request, *args, **kwargs):
         buffer = self.get_buffer()
@@ -50,16 +66,17 @@ class BaseFileView(View):
         return response
 
 
-class ImageView(BasePlotMixin, BaseFileView):
-    diposition = "inline"
-
-    def get_mimetype(self):
-        return f"image/{self.get_filetype()}"
+class ImageView(BasePlot, BaseFileView):
+    disposition = "inline"
 
 
 class PNGPlotView(PNGPlotMixin, ImageView):
-    pass
+    def get_mimetype(self):
+        return "image/png"
 
 
-class SVGPlotView(SVGPlotMixin, ImageView):
-    pass
+class SVGZPlotView(SVGZPlotMixin, ImageView):
+    encoding = "gzip"
+
+    def get_mimetype(self):
+        return "image/svg+xml"

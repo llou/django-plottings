@@ -1,9 +1,9 @@
-from .base import BasePlotMixin, StorageMixin, SVGPlotMixin, PNGPlotMixin
+from .base import BasePlot, FileMixin, SVGZPlotMixin, PNGPlotMixin
 
 
-class SVGPlotToFile(StorageMixin, SVGPlotMixin, BasePlotMixin):
+class SVGZPlotToFile(SVGZPlotMixin, FileMixin, BasePlot):
     pass
 
 
-class PNGPlotToFile(StorageMixin, PNGPlotMixin, BasePlotMixin):
+class PNGPlotToFile(PNGPlotMixin, FileMixin, BasePlot):
     pass

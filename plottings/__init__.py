@@ -2,16 +2,16 @@
 A library to generate Matplotilib graphics within django applications
 """
 
-from .file import SVGPlotToFile, PNGPlotToFile
-from .views import PNGPlotView, SVGPlotView
-from .memory import SVGPlot, PNGBase64Plot
+from .views import PNGPlotView, SVGZPlotView
+from .value import SVGPlotToValue, PNGBase64PlotToValue
+from .file import SVGZPlotToFile, PNGPlotToFile
 
-__all__ = ["SVGPlotToFile",
+__all__ = ["PNGPlotView",
+           "SVGZPlotView",
            "PNGPlotToFile",
-           "PNGPlotView",
-           "SVGPlotView",
-           "SVGPlot",
-           "PNGBase64Plot"
+           "SVGZPlotToFile",
+           "SVGPlotToValue",
+           "PNGBase64PlotToValue"
            ]
 
 __version__ = "0.0.1"

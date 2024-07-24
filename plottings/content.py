@@ -1,5 +1,5 @@
 from .base import (
-        BasePlotMixin,
+        BasePlot,
         ContentMixin,
         SVGPlotMixin,
         PNGPlotMixin,
@@ -7,10 +7,10 @@ from .base import (
         )
 
 
-class SVGPlotToVar(SVGPlotMixin, ContentMixin, BasePlotMixin):
+class SVGPlotToVar(SVGPlotMixin, ContentMixin, BasePlot):
     pass
 
 
 class PNGBase64PlotToVar(Base64PlotMixin, PNGPlotMixin, ContentMixin,
-                         BasePlotMixin):
+                         BasePlot):
     pass

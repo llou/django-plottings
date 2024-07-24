@@ -1,3 +1,3 @@
-from .base import PNGPlotView, SVGPlotView
+from .base import PNGPlotView, SVGZPlotView
 
-__all__ = ["PNGPlotView", "SVGPlotView"]
+__all__ = ["PNGPlotView", "SVGZPlotView"]

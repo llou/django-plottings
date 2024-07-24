@@ -1,6 +1,5 @@
 import os
 from io import BytesIO
-from typing import Any
 from django.test import TestCase
 from django.test.client import RequestFactory
 from plottings.views.base import BaseFileView, PNGPlotView, SVGZPlotView
