@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Django Plottings Testing App</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+</style>
+  </head>
+  <body>
+    <h1>Django Plottings Testing App</h1>
+
+    <h2>Plotting to PNG View</h2>
+    <img src="{% url "png" %}"/>
+
+    <h2>Plotting to SVG View</h2>
+    <img src="{% url "svgz" %}"/>
+
+    <h2>Inlining PNG data</h2>
+    <img src="data:image/png;base64, {{ png_data }}"/>
+
+    <h2>Inlining SVG data</h2>
+    {{ svg_data }}
+
+  </body>
+</html>
