@@ -8,6 +8,8 @@ from plottings import (
         SVGZPlotView,
         SVGPlotToValue,
         PNGBase64PlotToValue,
+        SVGZPlotToFile,
+        PNGPlotToFile,
         )
 
 
@@ -53,19 +55,27 @@ class TextPlotterMixin(BasePlotterMixin):
 
 
 class SVGPlotToValuePlotterTestCase(TextPlotterMixin, TestCase):
-    pass
+    tclass = SVGPlotToValue
 
 
 class SVGZPlotViewPlotterTestCase(BinaryPlotterMixin, TestCase):
-    pass
+    tclass = SVGZPlotView
+
+
+class SVGZPlotToFilePlotterTestCase(BinaryPlotterMixin, TestCase):
+    tclass = SVGZPlotToFile
 
 
 class PNGPlotViewPlotterTestCase(BinaryPlotterMixin, TestCase):
-    pass
+    tclass = PNGPlotView
 
 
 class PNGBase64PlotToValuePlotterTestCase(BinaryPlotterMixin, TestCase):
-    pass
+    tclass = PNGBase64PlotToValue
+
+
+class PNGPlotToFilePlotterTestCase(BinaryPlotterMixin, TestCase):
+    tclass = PNGPlotToFile
 
 
 # TEST Buffer
@@ -101,7 +111,6 @@ class BaseBufferMixin:
 
 class BinaryBufferMixin(BaseBufferMixin):
     output = PLOT_BINARY
-    file_type = "PNG"
 
 
 class TextBufferMixin(BaseBufferMixin):
@@ -111,18 +120,35 @@ class TextBufferMixin(BaseBufferMixin):
 
 class SVGPlotToValueBufferTestCase(TextBufferMixin, TestCase):
     tclass = SVGPlotToValue
+    file_type = "SVG"
 
 
-class SVGPlotViewBufferTestCase(BinaryBufferMixin, TestCase):
+class SVGZPlotViewBufferTestCase(BinaryBufferMixin, TestCase):
     tclass = SVGZPlotView
+    file_type = "SVGZ"
 
 
 class PNGPlotViewBufferTestCase(BinaryBufferMixin, TestCase):
     tclass = PNGPlotView
+    file_type = "PNG"
 
 
-class PNGBase64PlotToValueTestCase(BinaryBufferMixin, TestCase):
+class PNGBase64PlotToValueBufferTestCase(BinaryBufferMixin, TestCase):
     tclass = PNGBase64PlotToValue
+    file_type = "PNG"
+
+
+class SVGZPlotToFileBufferTestCase(BinaryBufferMixin, TestCase):
+    tclass = SVGZPlotToFile
+    output = PLOT_BINARY
+    file_type = "SVGZ"
+
+
+class PNGPlotToFileBufferTestCase(BinaryBufferMixin, TestCase):
+    tclass = PNGPlotToFile
+    output = PLOT_BINARY
+    file_type = "PNG"
+
 
 
 # TEST Explotation
@@ -133,16 +159,12 @@ class PNGBase64PlotToValueTestCase(BinaryBufferMixin, TestCase):
 
 class BaseValueMixin:
     tclass = BasePlot
-    filename = "filename"
     output: Any = ""
 
     def setUp(self):
         super().setUp()
 
         class MockPlot(self.tclass):
-            def get_filename(self2):
-                return self.filename
-
             def get_buffer(self2):
                 self.buffer = self2.buffer_class()
                 self.buffer.write(self.output)
@@ -172,3 +194,43 @@ class PNGPlotToBase64ValueTestCase(BaseValueMixin, TestCase):
 class SVGPlotToValueTestCase(BaseValueMixin, TestCase):
     tclass = SVGPlotToValue
     output = PLOT_TEXT
+
+
+# Files
+
+class BaseFileMixin:
+    tclass = BasePlot
+    filename = "filename"
+    output: Any = ""
+
+    def setUp(self):
+        super().setUp()
+
+        class MockPlot(self.tclass):
+            def get_filename(self2):
+                return self.filename
+
+            def get_buffer(self2):
+                self.buffer = self2.buffer_class()
+                self.buffer.write(self.output)
+                self.buffer.seek(0)
+                return self.buffer
+
+        self.plot = MockPlot()
+
+    def test_file(self):
+        f = self.plot.get_file()
+        with f.open() as f:
+            self.assertEqual(self.output, f.read())
+
+
+class PNGPlotToFileTestCase(BaseFileMixin, TestCase):
+    tclass = PNGPlotToFile
+    filename = "filename.png"
+    output = PLOT_BINARY
+
+
+class SVGZPlotToFileTestCase(BaseFileMixin, TestCase):
+    tclass = SVGZPlotToFile
+    filename = "filename.svgz"
+    output = PLOT_BINARY

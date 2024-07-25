@@ -58,3 +58,7 @@ DATABASES = {
         'NAME': '/tmp/plottings_test_db.sqlite3',
     }
 }
+
+MEDIA_ROOT = "/tmp/plotting_media"
+
+MEDIA_URL = "media/"

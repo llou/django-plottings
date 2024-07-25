@@ -1,7 +1,6 @@
 from random import randrange
 from datetime import date, timedelta
 from django.shortcuts import render
-from plottings.plots.activity import ActivityMap
 from plottings import (
         SVGZPlotToFile,
         PNGPlotToFile,
@@ -10,7 +9,9 @@ from plottings import (
         SVGPlotToValue,
         PNGBase64PlotToValue,
         )
-from .plots import activity_plot
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from .plots.activity import ActivityMap, activity_plot
 from .models import Plot
 
 
@@ -67,19 +68,23 @@ def main(request):
     return render(request, "main.html", context)
 
 
-class SVGZPlotToFile(ActivityPlotMixin, SVGZPlotToFile):
-    plotter_function = staticmethod(activity_plot)
-
-
-class PNGPlotToFile(ActivityPlotMixin, PNGPlotToFile):
+class PNGFilePlot(ActivityPlotMixin, PNGPlotToFile):
     plotter_function = staticmethod(activity_plot)
 
 
 def new_png(request):
-    data = SVGZPlotToFile().get_buffer()
-    plot = Plot()
-    return ""
+    file = PNGFilePlot().get_file()
+    plot = Plot(plot=file)
+    plot.save()
+    return HttpResponseRedirect(reverse('main'))
+
+
+class SVGZFilePlot(ActivityPlotMixin, SVGZPlotToFile):
+    plotter_function = staticmethod(activity_plot)
 
 
 def new_svg(request):
-    return ""
+    file = SVGZFilePlot().get_file()
+    plot = Plot(plot=file)
+    plot.save()
+    return HttpResponseRedirect(reverse('main'))
