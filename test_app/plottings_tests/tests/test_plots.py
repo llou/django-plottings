@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from unittest import TestCase
 import numpy as np
-from plottings.plots.activity import ActivityMap
+from ..plots.activity import ActivityMap
 
 FIXTURES_DIR = Path(__file__).resolve().parent / "fixtures"
 

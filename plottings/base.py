@@ -2,7 +2,6 @@ from io import BytesIO, StringIO
 from base64 import b64encode
 from django.core.files import File as DjangoFile
 from django.utils.safestring import mark_safe
-from .utils import random_name
 
 
 class ValueItem:
@@ -76,9 +75,10 @@ class ValueMixin:
 
 class FileMixin:
     file_class = DjangoFile
+    filename = ""
 
     def get_filename(self):
-        name = random_name(10)
+        name = self.filename
         ext = self.get_filetype()
         return f"{name}.{ext}"
 
