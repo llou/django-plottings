@@ -1,3 +1,4 @@
+from typing import Any
 from io import BytesIO, StringIO
 from base64 import b64encode
 from django.core.files import File as DjangoFile
@@ -33,6 +34,7 @@ class B64ValueItem(ValueItem):
 
 
 class BasePlot:
+    buffer_class: Any = BytesIO
     file_format = ""
 
     @staticmethod
