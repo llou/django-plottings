@@ -14,7 +14,7 @@ The library provides three different ways to use the rendered graphics:
  - as a text variable to be rendered within a webpage 
  - as a file to be saved and served lately
 
-## Examples
+## Example
 
 In the django `views.py` file:
 
@@ -43,7 +43,7 @@ header of the graphics file.
 ## Cache
 
 As these tasks are computationally expensive is a good practice to cache them
-once they are generated.  This library is designet to integrate with the
+once they are generated. This library is designed to integrate with the
 Django's cache framework.
 
 
