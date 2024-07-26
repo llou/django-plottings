@@ -25,8 +25,9 @@ class PlotView(PNGPlotView):
         return [(x.date, x.words) for x in Docs.objects.all()]
 
     @staticmethod
-    def plotter_function(data, color='blue'):
-        plotter_exampe
+    def plotter_function(data):
+        ...
+        return fig
 ```
 
 
