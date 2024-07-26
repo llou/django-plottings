@@ -40,7 +40,7 @@ class BasePlotterMixin():
         self.plot = MockPlot()
 
     def test_plotter_function(self):
-        figure = self.plot.get_figure()
+        figure = self.plot._get_figure()
         self.assertEqual(figure, self.plotter_function_mock.return_value)
         self.plotter_function_mock.assert_called_with(PLOT_DATA,
                                                       **PLOT_KWARGS)
@@ -206,7 +206,7 @@ class BaseFileMixin:
         super().setUp()
 
         class MockPlot(self.tclass):
-            def get_filename(self2):
+            def _get_filename(self2):
                 return self.filename
 
             def _get_buffer(self2):

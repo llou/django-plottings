@@ -17,7 +17,6 @@ from .models import Plot
 
 
 class ActivityPlotMixin:
-    plotter_function = staticmethod(activity_plot)
     activity_class = ActivityMap
     filename = "activity.svg"
     number_of_events = 400

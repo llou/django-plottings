@@ -12,7 +12,6 @@ class TestViewMixin:
     tclass = BaseFileView
     buffer_class = BytesIO
     filename = ""
-    filet_format = ""
     mimetype = "text/plain"
     disposition = "inline"
     output = b"texto"
@@ -27,12 +26,6 @@ class TestViewMixin:
 
             def get_filename(self2):
                 return self.filename
-
-            def get_extension(self2):
-                return self.file_format
-
-            def get_filetype(self2):
-                return self.file_format
 
             def get_mimetype(self2):
                 return self.mimetype
