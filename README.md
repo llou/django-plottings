@@ -38,7 +38,7 @@ class PlotView(PNGPlotView):
 
 ## Documentation
 
-Link to read the docs.
+[Link](https://django-plottings.readthedocs.io/en/latest/) to Read the Docs.
 
 ## Good practices
 
