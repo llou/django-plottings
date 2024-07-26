@@ -1,9 +1,9 @@
 import math
 from datetime import timedelta
 import matplotlib as mpl
-mpl.use('Agg')
 from matplotlib import pyplot as plt
 import numpy as np
+mpl.use('Agg')
 
 
 def activity_plot(data, xticks=None, yticks=None):

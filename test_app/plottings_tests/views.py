@@ -11,7 +11,8 @@ from plottings import (
         )
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .plots.activity import ActivityMap, activity_plot
+from .plots import activity_plot
+from .data import ActivityMap
 from .models import Plot
 
 
