@@ -2,7 +2,7 @@ import os
 from io import BytesIO
 from django.test import TestCase
 from django.test.client import RequestFactory
-from plottings.views.base import BaseFileView, PNGPlotView, SVGZPlotView
+from plottings.views import BaseFileView, PNGPlotView, SVGZPlotView
 
 
 os.environ['DJANGO_SETTINGS_MODULE'] = "plottings.tests.test_settings"
@@ -37,7 +37,7 @@ class TestViewMixin:
             def get_mimetype(self2):
                 return self.mimetype
 
-            def get_buffer(self2):
+            def _get_buffer(self2):
                 self.buffer = self.buffer_class()
                 self.buffer.write(self.output)
                 self.buffer.seek(0)

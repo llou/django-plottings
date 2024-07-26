@@ -58,7 +58,7 @@ class BasePlot:
         plot_kwargs = self.get_plot_kwargs()
         return self.plotter_function(data, **plot_kwargs)
 
-    def get_buffer(self):
+    def _get_buffer(self):
         buffer = self.buffer_class()
         figure = self.get_figure()
         figure.savefig(buffer, format=self.get_filetype())
@@ -70,7 +70,7 @@ class ValueMixin:
     value_class = ValueItem
 
     def get_value(self):
-        buffer = self.get_buffer()
+        buffer = self._get_buffer()
         value = buffer.getvalue()
         return self.value_class(self, value)
 
@@ -86,7 +86,7 @@ class FileMixin:
 
     def get_file(self):
         name = self.get_filename()
-        file = self.file_class(self.get_buffer(), name)
+        file = self.file_class(self._get_buffer(), name)
         return file
 
 

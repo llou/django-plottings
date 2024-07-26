@@ -2,7 +2,7 @@ from io import BytesIO
 from typing import Any
 from django.views import View
 from django.http import HttpResponse
-from ..base import BasePlot, SVGZPlotMixin, PNGPlotMixin
+from .base import BasePlot, SVGZPlotMixin, PNGPlotMixin
 
 # TODO Add cache Headers
 
@@ -54,11 +54,11 @@ class BaseFileView(View):
             result['Content-Encoding'] = encoding
         return result
 
-    def get_buffer(self):
+    def _get_buffer(self):
         raise NotImplementedError
 
     def get(self, request, *args, **kwargs):
-        buffer = self.get_buffer()
+        buffer = self._get_buffer()
         response = HttpResponse(buffer, content_type=self.get_mimetype())
         headers = self.get_headers()
         for key, value in headers.items():

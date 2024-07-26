@@ -104,7 +104,7 @@ class BaseBufferMixin:
         self.plot = MockPlot()
 
     def test_plotter_function(self):
-        buffer = self.plot.get_buffer()
+        buffer = self.plot._get_buffer()
         value = buffer.getvalue()
         self.assertEqual(value, self.output)
 
@@ -150,7 +150,6 @@ class PNGPlotToFileBufferTestCase(BinaryBufferMixin, TestCase):
     file_type = "PNG"
 
 
-
 # TEST Explotation
 
 
@@ -165,7 +164,7 @@ class BaseValueMixin:
         super().setUp()
 
         class MockPlot(self.tclass):
-            def get_buffer(self2):
+            def _get_buffer(self2):
                 self.buffer = self2.buffer_class()
                 self.buffer.write(self.output)
                 self.buffer.seek(0)
@@ -210,7 +209,7 @@ class BaseFileMixin:
             def get_filename(self2):
                 return self.filename
 
-            def get_buffer(self2):
+            def _get_buffer(self2):
                 self.buffer = self2.buffer_class()
                 self.buffer.write(self.output)
                 self.buffer.seek(0)
