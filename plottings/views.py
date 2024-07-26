@@ -90,7 +90,7 @@ class BaseFileView(View):
 
 class PNGPlotView(PNGPlotMixin, BaseFileView):
     """
-    A django view class that responses with a PNG graphic file to be inlined in
+    A Django view class that responses with a PNG graphic file to be inlined in
     a webpage.
     """
     disposition = "inline"
@@ -99,7 +99,7 @@ class PNGPlotView(PNGPlotMixin, BaseFileView):
 
 class SVGZPlotView(SVGZPlotMixin, BaseFileView):
     """
-    A django view class that responses with a SVGZ graphic file to be inlined
+    A Django view class that responses with a SVGZ graphic file to be inlined
     in a webpage.
     """
     disposition = "inline"

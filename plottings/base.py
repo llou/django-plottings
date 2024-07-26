@@ -6,7 +6,6 @@
     This module contains most of the basic objects used in generating the
     graphs and generating data to be passed to a template or saved to a
     file.
-
 """
 from typing import Any
 from io import BytesIO, StringIO
@@ -52,7 +51,7 @@ class ValueItem:
 class B64ValueItem(ValueItem):
     """
     This is the object passed to the template to insert the binary image as
-    a Base64 string in an <img> tag
+    a Base64 string in an <img> tag.
     """
     def get_value(self):
         return b64encode(self.value).decode("utf-8")
@@ -74,7 +73,7 @@ class BasePlot:
         a Matplotlib figure ready for dumping.
 
         :data: A data structure that contains the information to be graphically
-        modeled by the plotter function.
+            modeled by the plotter function.
 
         :kwargs: A dict of parameters used to customize the image rendering.
 
@@ -153,7 +152,7 @@ class FileMixin:
 
     def get_file(self):
         """
-        This method returns a django file object ready to be assigned to an
+        This method returns a Django file object ready to be assigned to an
         ImageField.
         """
         name = self._get_filename()

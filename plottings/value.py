@@ -1,3 +1,12 @@
+"""
+    ========
+    value.py
+    ========
+
+    This module provides with classes that assist in building value objects
+    ready to be passed to a django template and render the plot within an
+    html page.
+"""
 from .base import (
         BasePlot,
         ValueMixin,

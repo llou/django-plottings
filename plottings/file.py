@@ -1,3 +1,11 @@
+"""
+    =======
+    file.py
+    =======
+
+    This module provides the classes required to generate django files ready to
+    be stored in media directories.
+"""
 from .base import BasePlot, FileMixin, SVGZPlotMixin, PNGPlotMixin
 
 
