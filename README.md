@@ -8,7 +8,7 @@ widely used in science in general and data science in particular.
 Django is the leading framework for building web applications in the Python
 ecosystem.
 
-# About
+## About
 
 This library is built with the intention of speeding up the building of data
 science webapps by generating graphics on the server side.
