@@ -38,7 +38,7 @@ Link to read the docs.
 ## Good practices
 
 Remember to disable graphics displays with `matplotlib.use('Agg')` in the
-header of the graphics file.
+header of the plots file.
 
 ## Cache
 
