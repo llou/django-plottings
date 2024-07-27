@@ -3,9 +3,9 @@
     base.py
     =======
 
-    This module contains most of the basic objects used in generating the
-    graphs and generating data to be passed to a template or saved to a
-    file.
+    This module contains most of the basic classes used in generating the
+    plots and dumping them into file object or variables to be lately used
+    in Django.
 """
 from typing import Any
 from io import BytesIO, StringIO
@@ -16,9 +16,9 @@ from django.utils.safestring import mark_safe
 
 class BasePlot:
     """
-    Base class of all the plot objects used in this library, implements the
-    basic protocol that gathers the data, draws the graph and passes it
-    to an in memory file like object ready to be consumed.
+    Base class of all the plot classes used in this library. It implements the
+    basic protocol that gathers the data, draws the graph and passes it to an
+    in memory file like object ready to be consumed.
     """
     buffer_class: Any = BytesIO
     file_format = ""
@@ -26,8 +26,9 @@ class BasePlot:
     @staticmethod
     def plotter_function(data, **kwargs):
         """
-        Override this method with an statically linked function that returns
-        a Matplotlib figure ready for dumping.
+        Override this method with an **statically linked function** that
+        returns a Matplotlib figure to be lately used to render the plot
+        in given file formats.
 
         :data: A data structure that contains the information to be graphically
             modeled by the plotter function.
@@ -37,25 +38,12 @@ class BasePlot:
         """
         raise NotImplementedError("Plot class requires a plotter method")
 
-    def get_filetype(self):
+    def get_plot_data(self):
         """
-        Override this method to dinamically set the file format of the
-        generated file.
-        """
-        return self.file_format
-
-    def get_data(self):
-        """
-        Override this method to provide data to the plotter function.
+        Override this method to provide data to `plotter_function()`
+        method.
         """
         return {}
-
-    def get_cache_key(self):
-        """
-        Override this method with a value that changes when plot regeneration
-        is required.
-        """
-        return 0
 
     def get_plot_kwargs(self):
         """
@@ -64,8 +52,22 @@ class BasePlot:
         """
         return {}
 
+    def get_filetype(self):
+        """
+        Override this method to dinamically set the file format of the
+        generated file.
+        """
+        return self.file_format
+
+    def get_cache_key(self):
+        """
+        Override this method with a value that changes when plot regeneration
+        is required.
+        """
+        return 0
+
     def _get_figure(self):
-        data = self.get_data()
+        data = self.get_plot_data()
         plot_kwargs = self.get_plot_kwargs()
         return self.plotter_function(data, **plot_kwargs)
 

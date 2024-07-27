@@ -29,7 +29,7 @@ class BasePlotterMixin():
         self.plotter_function_mock = MagicMock()
 
         class MockPlot(self.tclass):
-            def get_data(self):
+            def get_plot_data(self):
                 return PLOT_DATA
 
             def get_plot_kwargs(self):
