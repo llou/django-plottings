@@ -14,40 +14,6 @@ from django.core.files import File as DjangoFile
 from django.utils.safestring import mark_safe
 
 
-class ValueItem:
-    """
-    This is the object passed to the template to insert the graph in the
-    template.
-    """
-    def __init__(self, plot, value):
-        self.plot = plot
-        self.value = value
-
-    @property
-    def cache_key(self):
-        """
-        Returns a unique identifier used by the cache framework to check for
-        changes.
-        """
-        return self.plot.get_cache_key()
-
-    def _get_value(self):
-        """
-        Override this method to transform the passed value to something that
-        can be rendered in a template.
-        """
-        return self.value
-
-    def __len__(self):
-        return len(self.value)
-
-    def __eq__(self, other):
-        return self._get_value() == str(other)
-
-    def __str__(self):
-        return mark_safe(self._get_value())
-
-
 class BasePlot:
     """
     Base class of all the plot objects used in this library, implements the
@@ -113,10 +79,9 @@ class BasePlot:
 
 class ValueMixin:
     """
-    This mixins provides `BasePlot` with the hability to generate a Value
-    object to be used inside a template.
+    This mixins provides `BasePlot` with the `get_value()` method that returns
+    a safe string to be used inside a template.
     """
-    value_class = ValueItem
 
     def get_value(self):
         """
@@ -125,7 +90,7 @@ class ValueMixin:
         """
         buffer = self._get_buffer()
         value = buffer.getvalue()
-        return self.value_class(self, value)
+        return mark_safe(value)
 
 
 class Base64ValueMixin:
@@ -136,7 +101,7 @@ class Base64ValueMixin:
     def get_value(self):
         buffer = self._get_buffer()
         value = buffer.getvalue()
-        return b64encode(value).decode("utf-8")
+        return mark_safe(b64encode(value).decode("utf-8"))
 
 
 class FileMixin:

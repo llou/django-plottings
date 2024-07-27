@@ -172,22 +172,21 @@ class BaseValueMixin:
 
         self.plot = MockPlot()
 
-    def decode_buffer(self, buffer):
-        return buffer.getvalue()
+    def get_value(self):
+        return str(self.plot.get_value())
 
     def test_value(self):
-        value = self.plot.get_value()
-        self.assertEqual(value.value, self.output)
+        value = self.get_value()
+        assert value, self.output
 
 
 class PNGPlotToBase64ValueTestCase(BaseValueMixin, TestCase):
     tclass = PNGBase64PlotToValue
     output = PLOT_BINARY
 
-    def decode_buffer(self, buffer):
-        value = super().decode_buffer(buffer)
-        result = b64decode(str(value))
-        return result
+    def get_value(self):
+        value = super().get_value()
+        return b64decode(value)
 
 
 class SVGPlotToValueTestCase(BaseValueMixin, TestCase):
