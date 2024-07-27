@@ -80,9 +80,9 @@ SVGZPlotView
 File Classes
 ------------
 
-This class is intended to be initiallized and then to proceed to call the
-`get_file()` method that returns a Django file object ready to be assigned to a
-Django ImageField for saving and storing the data in a media folder.
+These two classes are intended to be initiallized and then to proceed to call
+the `get_file()` method that returns a Django file object ready to be assigned
+to a Django ImageField for saving and storing the data in a media folder.
 
 PNGPlotToFile
 ^^^^^^^^^^^^^
@@ -101,9 +101,9 @@ SVGZPlotToFile
 Value Classes
 -------------
 
-This class is intended to be initiallized and then to proceed to call the
-`get_value()` method that returns a ValueItem object intended to be passed to
-the Django Template System to render the webpage with the image included.
+This two classes are intended to be initiallized and then to proceed to call
+the `get_value()` method that returns a ValueItem object intended to be passed
+to the Django Template System to render the webpage with the image included.
 
 PNGBase64PlotToValue
 ^^^^^^^^^^^^^^^^^^^^
