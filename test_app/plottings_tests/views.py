@@ -39,7 +39,7 @@ class ActivityPlotMixin:
                 "yticks": self.map.get_y_ticks(),
                 }
 
-    def get_data(self):
+    def get_plot_data(self):
         return self.map.get_data()
 
 

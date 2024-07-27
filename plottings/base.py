@@ -87,8 +87,8 @@ class ValueMixin:
 
     def get_value(self):
         """
-        Add this value to the context dictionary that is passed to render the
-        template.
+        Add the returned value of this method to the context dictionary that is
+        passed to render the template.
         """
         buffer = self._get_buffer()
         value = buffer.getvalue()
@@ -101,6 +101,10 @@ class Base64ValueMixin:
     provided value through `get_value()` method.
     """
     def get_value(self):
+        """
+        Add the returned value of this method to the context dictionary that is
+        passed to render the template.
+        """
         buffer = self._get_buffer()
         value = buffer.getvalue()
         return mark_safe(b64encode(value).decode("utf-8"))
@@ -108,13 +112,17 @@ class Base64ValueMixin:
 
 class FileMixin:
     """
-    This mixin provides the `BasePlot` with the capability of generating a in
-    memory file to be passed to an Image field.
+    This mixin provides the `BasePlot` class with the capability of generating
+    a in memory file to be passed to an Image field.
     """
     file_class = DjangoFile
     filename = ""
 
-    def _get_filename(self):
+    def get_filename(self):
+        """
+        Override this method to dinamically change the name of the file object
+        created by the `get_file()` method.
+        """
         name = self.filename
         ext = self.get_filetype()
         return f"{name}.{ext}"
@@ -124,7 +132,7 @@ class FileMixin:
         This method returns a Django file object ready to be assigned to an
         ImageField.
         """
-        name = self._get_filename()
+        name = self.get_filename()
         file = self.file_class(self._get_buffer(), name)
         return file
 

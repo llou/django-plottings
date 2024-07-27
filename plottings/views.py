@@ -3,7 +3,8 @@
     views.py
     ========
 
-    This module provides with classes that builds Matplotlib figures on demand.
+    This module provides with View classes that return HttpResponse objects
+    with Matplotlib figures as payload.
 
 """
 from typing import Any
@@ -13,6 +14,7 @@ from .base import SVGZPlotMixin, PNGPlotMixin
 
 
 class BaseFileView(View):
+    http_response_class = HttpResponse
     buffer_class: Any = None
     file_format = ""
     filename = ""
@@ -27,7 +29,7 @@ class BaseFileView(View):
     def get_disposition(self):
         """
         Override this method if you want to dinamically set the content
-        disposition of the response object.
+        disposition of the `HttpResponse` object.
         """
         return self.disposition
 
@@ -73,15 +75,13 @@ class BaseFileView(View):
             result['Content-Encoding'] = encoding
         return result
 
-    def _get_buffer(self):
-        raise NotImplementedError
-
     def get(self, request, *args, **kwargs):
         """
-        This object only responds to get requests.
+        This methods generates the GET response.
         """
         buffer = self._get_buffer()
-        response = HttpResponse(buffer, content_type=self.get_mimetype())
+        response = self.http_response_class(buffer,
+                                            content_type=self.get_mimetype())
         headers = self.get_headers()
         for key, value in headers.items():
             response.headers[key] = value
@@ -90,8 +90,8 @@ class BaseFileView(View):
 
 class PNGPlotView(PNGPlotMixin, BaseFileView):
     """
-    A Django view class that responses with a PNG graphic file to be inlined in
-    a webpage.
+    A Django `View` class that returns a PNG graphic file as `HttpResponse`
+    payload.
     """
     disposition = "inline"
     mimetype = "image/png"
@@ -99,8 +99,8 @@ class PNGPlotView(PNGPlotMixin, BaseFileView):
 
 class SVGZPlotView(SVGZPlotMixin, BaseFileView):
     """
-    A Django view class that responses with a SVGZ graphic file to be inlined
-    in a webpage.
+    A Django `View` class that returns a SVGZ graphic file as `HttpResponse`
+    payload.
     """
     disposition = "inline"
     encoding = "gzip"
