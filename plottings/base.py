@@ -40,7 +40,7 @@ class BasePlot:
 
     def get_plot_data(self):
         """
-        Override this method to provide data to `plotter_function()`
+        Override this method to provide data to ``plotter_function()``
         method.
         """
         return {}
@@ -81,8 +81,8 @@ class BasePlot:
 
 class ValueMixin:
     """
-    This mixins provides `BasePlot` with the `get_value()` method that returns
-    a safe string to be used inside a template.
+    This mixins provides ``BasePlot`` with the ``get_value()`` method that
+    returns a safe string to be used inside a template.
     """
 
     def get_value(self):
@@ -97,8 +97,8 @@ class ValueMixin:
 
 class Base64ValueMixin:
     """
-    This mixin provides the `BasePlot` class with base64 encoding of its
-    provided value through `get_value()` method.
+    This mixin provides the ``BasePlot`` class with base64 encoding of its
+    provided value through ``get_value()`` method.
     """
     def get_value(self):
         """
@@ -112,8 +112,8 @@ class Base64ValueMixin:
 
 class FileMixin:
     """
-    This mixin provides the `BasePlot` class with the capability of generating
-    a in memory file to be passed to an Image field.
+    This mixin provides the ``BasePlot`` class with the capability of
+    generating a in memory file to be passed to an Image field.
     """
     file_class = DjangoFile
     filename = ""
@@ -121,7 +121,7 @@ class FileMixin:
     def get_filename(self):
         """
         Override this method to dinamically change the name of the file object
-        created by the `get_file()` method.
+        created by the ``get_file()`` method.
         """
         name = self.filename
         ext = self.get_filetype()

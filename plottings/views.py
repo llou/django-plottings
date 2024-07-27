@@ -29,7 +29,7 @@ class BaseFileView(View):
     def get_disposition(self):
         """
         Override this method if you want to dinamically set the content
-        disposition of the `HttpResponse` object.
+        disposition of the ``HttpResponse`` object.
         """
         return self.disposition
 
@@ -90,7 +90,7 @@ class BaseFileView(View):
 
 class PNGPlotView(PNGPlotMixin, BaseFileView):
     """
-    A Django `View` class that returns a PNG graphic file as `HttpResponse`
+    A Django ``View`` class that returns a PNG graphic file as ``HttpResponse``
     payload.
     """
     disposition = "inline"
