@@ -14,9 +14,9 @@ classifiers = [
     "Programming Language :: Python :: 3"
 ]
 dependencies = [
-    "django >= 4.2",
-    "numpy >= 2",
-    "matplotlib >= 3.9.1",
+    "django",
+    "numpy",
+    "matplotlib",
 ]
 
 [project.urls]
