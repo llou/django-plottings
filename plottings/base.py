@@ -31,7 +31,7 @@ class ValueItem:
         """
         return self.plot.get_cache_key()
 
-    def get_value(self):
+    def _get_value(self):
         """
         Override this method to transform the passed value to something that
         can be rendered in a template.
@@ -42,19 +42,10 @@ class ValueItem:
         return len(self.value)
 
     def __eq__(self, other):
-        return self.get_value() == str(other)
+        return self._get_value() == str(other)
 
     def __str__(self):
-        return mark_safe(self.get_value())
-
-
-class B64ValueItem(ValueItem):
-    """
-    This is the object passed to the template to insert the binary image as
-    a Base64 string in an <img> tag.
-    """
-    def get_value(self):
-        return b64encode(self.value).decode("utf-8")
+        return mark_safe(self._get_value())
 
 
 class BasePlot:
@@ -122,8 +113,8 @@ class BasePlot:
 
 class ValueMixin:
     """
-    This mixins provides base plot with the hability to generate a Value object
-    to be used inside a template.
+    This mixins provides `BasePlot` with the hability to generate a Value
+    object to be used inside a template.
     """
     value_class = ValueItem
 
@@ -137,9 +128,20 @@ class ValueMixin:
         return self.value_class(self, value)
 
 
+class Base64ValueMixin:
+    """
+    This mixin provides the `BasePlot` class with base64 encoding of its
+    provided value through `get_value()` method.
+    """
+    def get_value(self):
+        buffer = self._get_buffer()
+        value = buffer.getvalue()
+        return b64encode(value).decode("utf-8")
+
+
 class FileMixin:
     """
-    This mixin provides the base plot with the capability of generating a in
+    This mixin provides the `BasePlot` with the capability of generating a in
     memory file to be passed to an Image field.
     """
     file_class = DjangoFile
@@ -182,10 +184,3 @@ class PNGPlotMixin(BasePlot):
     """
     buffer_class = BytesIO
     file_format = "png"
-
-
-class Base64PlotMixin:
-    """
-    Mixin to generate a memory file containing a PNG figure.
-    """
-    value_class = B64ValueItem

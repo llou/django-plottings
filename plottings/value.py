@@ -10,9 +10,9 @@
 from .base import (
         BasePlot,
         ValueMixin,
+        Base64ValueMixin,
         SVGPlotMixin,
         PNGPlotMixin,
-        Base64PlotMixin
 )
 
 
@@ -24,7 +24,7 @@ class SVGPlotToValue(SVGPlotMixin, ValueMixin, BasePlot):
     pass
 
 
-class PNGBase64PlotToValue(Base64PlotMixin, PNGPlotMixin, ValueMixin,
+class PNGBase64PlotToValue(Base64ValueMixin, PNGPlotMixin, ValueMixin,
                            BasePlot):
     """
     This class is used to dump a PNG figure encoded in Base64 format into a
