@@ -30,6 +30,14 @@ It renders graphics in two different formats PNG and SVG, the first a concise
 but not much precise way of storing images, the second much more precise in the
 details but heavier.
 
+Good Practices
+--------------
+
+It's a good idea to have the code split in various files in the Django app
+directory. The matplotlib code in a ``plots.py`` file and the Pandas or data
+procesing in ``data.py``. Remember to disable the screen mode by inserting
+``matplotlib.use("Agg")`` in the header of the ``plots.py`` file.
+
 Base Classes
 ------------
 
