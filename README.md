@@ -44,11 +44,3 @@ class PlotView(PNGPlotView):
 
 Remember to disable graphics displays with `matplotlib.use('Agg')` in the
 header of the plots file.
-
-## Cache
-
-As these tasks are computationally expensive is a good practice to cache them
-once they are generated. This library is designed to integrate with the
-Django's cache framework.
-
-
