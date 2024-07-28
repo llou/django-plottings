@@ -42,7 +42,5 @@ Remember to disable graphics displays with `matplotlib.use('Agg')` in the
 header of the plots file.
 
 ## Links
-
 - [Documentation](https://django-plottings.readthedocs.io/en/latest/) in [Read the Docs](https://about.readthedocs.com/).
-
-- Development is centralized in [GitHub](https://github.com/llou/django-plottings)
+- [Development Repository](https://github.com/llou/django-plottings) is centralized in [GitHub](https://github.com)
