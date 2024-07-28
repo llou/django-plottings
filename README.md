@@ -43,4 +43,4 @@ header of the plots file.
 
 ## Links
 - [Documentation](https://django-plottings.readthedocs.io/en/latest/) in [Read the Docs](https://about.readthedocs.com/).
-- [Development Repository](https://github.com/llou/django-plottings) is centralized in [GitHub](https://github.com)
+- [Development Repository](https://github.com/llou/django-plottings) is centralized on [GitHub](https://github.com)
