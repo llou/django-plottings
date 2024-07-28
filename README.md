@@ -1,6 +1,6 @@
 # Django-Plottings
 
-A library to generate Matplotlib graphics within Django applications.
+A library to generate [Matplotlib](https://matplotlib.org/stable/) graphics within [Django](https://www.djangoproject.com/) applications.
 
 Matplotlib is a Python library for mathematical graphics representations,
 widely used in science in general and data science in particular.
@@ -36,11 +36,13 @@ class PlotView(PNGPlotView):
 ```
 
 
-## Documentation
-
-[Link](https://django-plottings.readthedocs.io/en/latest/) to Read the Docs.
-
 ## Good practices
 
 Remember to disable graphics displays with `matplotlib.use('Agg')` in the
 header of the plots file.
+
+## Links
+
+- [Documentation](https://django-plottings.readthedocs.io/en/latest/) in [Read the Docs](https://about.readthedocs.com/).
+
+- Development is centralized in [GitHub](https://github.com/llou/django-plottings)
