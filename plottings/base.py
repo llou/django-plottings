@@ -9,7 +9,9 @@
 """
 from typing import Any
 from io import BytesIO, StringIO
+from contextlib import contextmanager
 from base64 import b64encode
+import matplotlib.pyplot as plt
 from django.core.files import File as DjangoFile
 from django.utils.safestring import mark_safe
 
@@ -66,15 +68,18 @@ class BasePlot:
         """
         return 0
 
+    @contextmanager
     def _get_figure(self):
         data = self.get_plot_data()
         plot_kwargs = self.get_plot_kwargs()
-        return self.plotter_function(data, **plot_kwargs)
+        figure = self.plotter_function(data, **plot_kwargs)
+        yield figure
+        plt.close(figure)
 
     def _get_buffer(self):
         buffer = self.buffer_class()
-        figure = self._get_figure()
-        figure.savefig(buffer, format=self.get_filetype())
+        with self._get_figure() as figure:
+            figure.savefig(buffer, format=self.get_filetype())
         buffer.seek(0)
         return buffer
 
