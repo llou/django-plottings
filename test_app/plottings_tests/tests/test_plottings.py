@@ -2,6 +2,7 @@ from typing import Any
 from base64 import b64decode
 from unittest import TestCase
 from unittest.mock import Mock, MagicMock
+import matplotlib.pyplot as plt
 from plottings.base import BasePlot
 from plottings import (
         PNGPlotView,
@@ -40,10 +41,12 @@ class BasePlotterMixin():
         self.plot = MockPlot()
 
     def test_plotter_function(self):
-        figure = self.plot._get_figure()
-        self.assertEqual(figure, self.plotter_function_mock.return_value)
-        self.plotter_function_mock.assert_called_with(PLOT_DATA,
-                                                      **PLOT_KWARGS)
+        with self.plot._get_figure() as figure:
+            self.assertEqual(figure, self.plotter_function_mock.return_value)
+            self.plotter_function_mock.assert_called_with(PLOT_DATA,
+                                                          **PLOT_KWARGS)
+        fignums = plt.get_fignums()
+        self.assertEqual(len(fignums), 0)
 
 
 class BinaryPlotterMixin(BasePlotterMixin):
