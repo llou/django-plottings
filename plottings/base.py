@@ -73,8 +73,10 @@ class BasePlot:
         data = self.get_plot_data()
         plot_kwargs = self.get_plot_kwargs()
         figure = self.plotter_function(data, **plot_kwargs)
-        yield figure
-        plt.close(figure)
+        try:
+            yield figure
+        finally:
+            plt.close(figure)
 
     def _get_buffer(self):
         buffer = self.buffer_class()
