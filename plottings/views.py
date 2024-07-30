@@ -79,7 +79,7 @@ class BaseFileView(View):
         """
         This methods generates the GET response.
         """
-        buffer = self._get_buffer()
+        buffer = self.get_image()
         response = self.http_response_class(buffer,
                                             content_type=self.get_mimetype())
         headers = self.get_headers()

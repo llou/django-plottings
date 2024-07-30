@@ -78,7 +78,10 @@ class BasePlot:
         finally:
             plt.close(figure)
 
-    def _get_buffer(self):
+    def get_image(self):
+        """
+        Override this method to do all the in memory work of the plot.
+        """
         buffer = self.buffer_class()
         with self._get_figure() as figure:
             figure.savefig(buffer, format=self.get_filetype())
@@ -97,7 +100,7 @@ class ValueMixin:
         Add the returned value of this method to the context dictionary that is
         passed to render the template.
         """
-        buffer = self._get_buffer()
+        buffer = self.get_image()
         value = buffer.getvalue()
         return mark_safe(value)
 
@@ -112,7 +115,7 @@ class Base64ValueMixin:
         Add the returned value of this method to the context dictionary that is
         passed to render the template.
         """
-        buffer = self._get_buffer()
+        buffer = self.get_image()
         value = buffer.getvalue()
         return mark_safe(b64encode(value).decode("utf-8"))
 
@@ -140,7 +143,7 @@ class FileMixin:
         ImageField.
         """
         name = self.get_filename()
-        file = self.file_class(self._get_buffer(), name)
+        file = self.file_class(self.get_image(), name)
         return file
 
 

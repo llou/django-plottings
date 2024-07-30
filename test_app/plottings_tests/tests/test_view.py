@@ -30,7 +30,7 @@ class TestViewMixin:
             def get_mimetype(self2):
                 return self.mimetype
 
-            def _get_buffer(self2):
+            def get_image(self2):
                 self.buffer = self.buffer_class()
                 self.buffer.write(self.output)
                 self.buffer.seek(0)

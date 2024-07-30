@@ -107,7 +107,7 @@ class BaseBufferMixin:
         self.plot = MockPlot()
 
     def test_plotter_function(self):
-        buffer = self.plot._get_buffer()
+        buffer = self.plot.get_image()
         value = buffer.getvalue()
         self.assertEqual(value, self.output)
 
@@ -167,7 +167,7 @@ class BaseValueMixin:
         super().setUp()
 
         class MockPlot(self.tclass):
-            def _get_buffer(self2):
+            def get_image(self2):
                 self.buffer = self2.buffer_class()
                 self.buffer.write(self.output)
                 self.buffer.seek(0)
@@ -211,7 +211,7 @@ class BaseFileMixin:
             def _get_filename(self2):
                 return self.filename
 
-            def _get_buffer(self2):
+            def get_image(self2):
                 self.buffer = self2.buffer_class()
                 self.buffer.write(self.output)
                 self.buffer.seek(0)
