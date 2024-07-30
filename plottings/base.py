@@ -80,7 +80,7 @@ class BasePlot:
 
     def get_image(self):
         """
-        Override this method to do all the in memory work of the plot.
+        Override this method to do the in memory work of the plotting process.
         """
         buffer = self.buffer_class()
         with self._get_figure() as figure:
