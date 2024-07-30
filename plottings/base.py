@@ -10,10 +10,8 @@
 from typing import Any
 from io import BytesIO, StringIO
 from contextlib import contextmanager
-from base64 import b64encode
 import matplotlib.pyplot as plt
-from django.core.files import File as DjangoFile
-from django.utils.safestring import mark_safe
+from django.core.cache import caches
 
 
 class BasePlot:
@@ -61,13 +59,6 @@ class BasePlot:
         """
         return self.file_format
 
-    def get_cache_key(self):
-        """
-        Override this method with a value that changes when plot regeneration
-        is required.
-        """
-        return 0
-
     @contextmanager
     def _get_figure(self):
         data = self.get_plot_data()
@@ -80,7 +71,7 @@ class BasePlot:
 
     def get_image(self):
         """
-        Override this method to do the in memory work of the plotting process.
+        Returns a in memory file object with the plot image.
         """
         buffer = self.buffer_class()
         with self._get_figure() as figure:
@@ -89,62 +80,32 @@ class BasePlot:
         return buffer
 
 
-class ValueMixin:
-    """
-    This mixins provides ``BasePlot`` with the ``get_value()`` method that
-    returns a safe string to be used inside a template.
-    """
+class CachedMixin:
+    cache_backend_name = "default"
+    cache_timeout = -1
 
-    def get_value(self):
+    def get_cache_key(self):
         """
-        Add the returned value of this method to the context dictionary that is
-        passed to render the template.
+        Override this method with a value that changes when plot regeneration
+        is required.
         """
-        buffer = self.get_image()
-        value = buffer.getvalue()
-        return mark_safe(value)
+        raise NotImplementedError
 
+    def get_image(self):
+        cache_backend = caches[self.cache_backend_name]
+        cache_key = self.get_cache_key()
+        image_value = cache_backend.get(cache_key)
 
-class Base64ValueMixin:
-    """
-    This mixin provides the ``BasePlot`` class with base64 encoding of its
-    provided value through ``get_value()`` method.
-    """
-    def get_value(self):
-        """
-        Add the returned value of this method to the context dictionary that is
-        passed to render the template.
-        """
-        buffer = self.get_image()
-        value = buffer.getvalue()
-        return mark_safe(b64encode(value).decode("utf-8"))
-
-
-class FileMixin:
-    """
-    This mixin provides the ``BasePlot`` class with the capability of
-    generating a in memory file to be passed to an Image field.
-    """
-    file_class = DjangoFile
-    filename = ""
-
-    def get_filename(self):
-        """
-        Override this method to dinamically change the name of the file object
-        created by the ``get_file()`` method.
-        """
-        name = self.filename
-        ext = self.get_filetype()
-        return f"{name}.{ext}"
-
-    def get_file(self):
-        """
-        This method returns a Django file object ready to be assigned to an
-        ImageField.
-        """
-        name = self.get_filename()
-        file = self.file_class(self.get_image(), name)
-        return file
+        if image_value is None:
+            image_file = super().get_image()
+            image_value = image_file.get_value()
+            if self.cache_timeout == -1:
+                cache_backend.set(cache_key, image_value)
+            else:
+                cache_backend.set(cache_key, image_value, self.cache_timeout)
+            return image_file
+        else:
+            return self.buffer_class(image_value)
 
 
 class SVGPlotMixin(BasePlot):

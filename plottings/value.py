@@ -7,13 +7,45 @@
     variables ready to be passed to Django templates and include the plot
     within the html document.
 """
+from base64 import b64encode
+from django.utils.safestring import mark_safe
 from .base import (
         BasePlot,
-        ValueMixin,
-        Base64ValueMixin,
+        CachedMixin,
         SVGPlotMixin,
         PNGPlotMixin,
 )
+
+
+class ValueMixin:
+    """
+    This mixins provides ``BasePlot`` with the ``get_value()`` method that
+    returns a safe string to be used inside a template.
+    """
+
+    def get_value(self):
+        """
+        Add the returned value of this method to the context dictionary that is
+        passed to render the template.
+        """
+        buffer = self.get_image()
+        value = buffer.getvalue()
+        return mark_safe(value)
+
+
+class Base64ValueMixin:
+    """
+    This mixin provides the ``BasePlot`` class with base64 encoding of its
+    provided value through ``get_value()`` method.
+    """
+    def get_value(self):
+        """
+        Add the returned value of this method to the context dictionary that is
+        passed to render the template.
+        """
+        buffer = self.get_image()
+        value = buffer.getvalue()
+        return mark_safe(b64encode(value).decode("utf-8"))
 
 
 class SVGPlotToValue(SVGPlotMixin, ValueMixin, BasePlot):
@@ -32,3 +64,25 @@ class PNGBase64PlotToValue(Base64ValueMixin, PNGPlotMixin, ValueMixin,
     webpage.
     """
     pass
+
+
+class CachedSVGPlotToValue(CachedMixin, SVGPlotMixin, ValueMixin, BasePlot):
+    """
+    This class is used to create a SVG figure into a variable ready to
+    be passed to the template engine to render it in a webpage. Cached Version.
+    """
+    pass
+
+
+class CachedPNGBase64PlotToValue(CachedMixin, Base64ValueMixin, PNGPlotMixin,
+                                 ValueMixin, BasePlot):
+    """
+    This class is used to dump a PNG figure encoded in Base64 format into a
+    variable ready to be passed to the template engine to render it in a
+    webpage. Cached Version.
+    """
+    pass
+
+
+SVGValue = CachedSVGPlotToValue
+PNGValue = CachedPNGBase64PlotToValue

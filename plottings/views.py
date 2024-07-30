@@ -10,7 +10,7 @@
 from typing import Any
 from django.views import View
 from django.http import HttpResponse
-from .base import SVGZPlotMixin, PNGPlotMixin
+from .base import CachedMixin, SVGZPlotMixin, PNGPlotMixin
 
 
 class BaseFileView(View):
@@ -105,3 +105,26 @@ class SVGZPlotView(SVGZPlotMixin, BaseFileView):
     disposition = "inline"
     encoding = "gzip"
     mimetype = "image/svg+xml"
+
+
+class CachedPNGPlotView(CachedMixin, PNGPlotMixin, BaseFileView):
+    """
+    A Django ``View`` class that returns a PNG graphic file as ``HttpResponse``
+    payload.
+    """
+    disposition = "inline"
+    mimetype = "image/png"
+
+
+class CachedSVGZPlotView(CachedMixin, SVGZPlotMixin, BaseFileView):
+    """
+    A Django `View` class that returns a SVGZ graphic file as `HttpResponse`
+    payload.
+    """
+    disposition = "inline"
+    encoding = "gzip"
+    mimetype = "image/svg+xml"
+
+
+SVGView = CachedSVGZPlotView
+PNGView = CachedPNGPlotView
