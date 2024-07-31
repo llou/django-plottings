@@ -54,7 +54,7 @@ class BaseFileView(View):
         """
         return self.encoding
 
-    def get_headers(self):
+    def get_headers(self, buffer):
         """
         Returns a dict of parameters to be used as headers of the response
         object. Override it to provide extend the values it contains.
@@ -73,6 +73,7 @@ class BaseFileView(View):
         encoding = self.get_encoding()
         if encoding:
             result['Content-Encoding'] = encoding
+        result['Content-Length'] = buffer.getbuffer().nbytes
         return result
 
     def get(self, request, *args, **kwargs):
@@ -80,9 +81,22 @@ class BaseFileView(View):
         This methods generates the GET response.
         """
         buffer = self.get_image()
+        headers = self.get_headers(buffer)
+
         response = self.http_response_class(buffer,
                                             content_type=self.get_mimetype())
-        headers = self.get_headers()
+        for key, value in headers.items():
+            response.headers[key] = value
+        return response
+
+    def head(self, request, *args, **kwargs):
+        """
+        This methods generates the GET response.
+        """
+        buffer = self.get_image()
+        response = self.http_response_class(b"",
+                                            content_type=self.get_mimetype())
+        headers = self.get_headers(buffer)
         for key, value in headers.items():
             response.headers[key] = value
         return response

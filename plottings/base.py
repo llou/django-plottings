@@ -69,15 +69,23 @@ class BasePlot:
         finally:
             plt.close(figure)
 
+    def process_image(self, image):
+        """
+        Override this method to add modifications to the image such as
+        watermarks before caching.
+        """
+        return image
+
     def get_image(self):
         """
         Returns a in memory file object with the plot image.
         """
-        buffer = self.buffer_class()
+        image_buffer = self.buffer_class()
         with self._get_figure() as figure:
-            figure.savefig(buffer, format=self.get_filetype())
-        buffer.seek(0)
-        return buffer
+            figure.savefig(image_buffer, format=self.get_filetype())
+        image_buffer = self.process_image(image_buffer)
+        image_buffer.seek(0)
+        return image_buffer
 
 
 class CachedMixin:
@@ -98,7 +106,7 @@ class CachedMixin:
 
         if image_value is None:
             image_file = super().get_image()
-            image_value = image_file.get_value()
+            image_value = image_file.getvalue()
             if self.cache_timeout == -1:
                 cache_backend.set(cache_key, image_value)
             else:
