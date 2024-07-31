@@ -81,17 +81,17 @@ class PNGPlotToFilePlotterTestCase(BinaryPlotterMixin, TestCase):
     tclass = PNGPlotToFile
 
 
-# TEST Buffer
+# TEST Image
 
-class BaseBufferMixin:
+class BaseImageMixin:
     tclass = BasePlot
     output: Any = ""
 
     def setUp(self):
         super().setUp()
 
-        def savefig(buffer, format=self.file_type):
-            buffer.write(self.output)
+        def savefig(image_buffer, format=self.file_type):
+            image_buffer.write(self.output)
 
         figure = Mock()
         figure.savefig = savefig
@@ -107,50 +107,120 @@ class BaseBufferMixin:
         self.plot = MockPlot()
 
     def test_plotter_function(self):
-        buffer = self.plot.get_image()
-        value = buffer.getvalue()
-        self.assertEqual(value, self.output)
+        image_buffer = self.plot.get_image()
+        image_value = image_buffer.getvalue()
+        self.assertEqual(image_value, self.output)
 
 
-class BinaryBufferMixin(BaseBufferMixin):
+class BinaryImageMixin(BaseImageMixin):
     output = PLOT_BINARY
 
 
-class TextBufferMixin(BaseBufferMixin):
+class TextImageMixin(BaseImageMixin):
     output = PLOT_TEXT
     file_type = "SVG"
 
 
-class SVGPlotToValueBufferTestCase(TextBufferMixin, TestCase):
+class SVGPlotToValueImageTestCase(TextImageMixin, TestCase):
     tclass = SVGPlotToValue
     file_type = "SVG"
 
 
-class SVGZPlotViewBufferTestCase(BinaryBufferMixin, TestCase):
+class SVGZPlotViewImageTestCase(BinaryImageMixin, TestCase):
     tclass = SVGZPlotView
     file_type = "SVGZ"
 
 
-class PNGPlotViewBufferTestCase(BinaryBufferMixin, TestCase):
+class PNGPlotViewImageTestCase(BinaryImageMixin, TestCase):
     tclass = PNGPlotView
     file_type = "PNG"
 
 
-class PNGBase64PlotToValueBufferTestCase(BinaryBufferMixin, TestCase):
+class PNGBase64PlotToValueImageTestCase(BinaryImageMixin, TestCase):
     tclass = PNGBase64PlotToValue
     file_type = "PNG"
 
 
-class SVGZPlotToFileBufferTestCase(BinaryBufferMixin, TestCase):
+class SVGZPlotToFileImageTestCase(BinaryImageMixin, TestCase):
     tclass = SVGZPlotToFile
     output = PLOT_BINARY
     file_type = "SVGZ"
 
 
-class PNGPlotToFileBufferTestCase(BinaryBufferMixin, TestCase):
+class PNGPlotToFileImageTestCase(BinaryImageMixin, TestCase):
     tclass = PNGPlotToFile
     output = PLOT_BINARY
     file_type = "PNG"
+
+# TEST PIL
+
+
+class BasePILMixin:
+    tclass = BasePlot
+    output: Any = ""
+    something: Any = b"X"
+
+    def setUp(self):
+        super().setUp()
+
+        def savefig(image_buffer, **kwargs):
+            image_buffer.write(self.output)
+
+        figure = Mock()
+        figure.savefig = savefig
+        self.plotter_function_mock = MagicMock()
+        self.plotter_function_mock.return_value = figure
+
+        class MockPlot(self.tclass):
+            def process_image(self2, input_image_buffer):
+                data = input_image_buffer.getvalue()
+                data = data + self.something
+                return self2.buffer_class(data)
+
+            plotter_function = self.plotter_function_mock
+
+        self.plot = MockPlot()
+
+    def test_process_image_function(self):
+        image_buffer = self.plot.get_image()
+        image_value = image_buffer.getvalue()
+        self.assertEqual(image_value, self.output + self.something)
+
+
+class BinaryPILMixin(BasePILMixin):
+    output = PLOT_BINARY
+    something = b"X"
+
+
+class TextPILMixin(BasePILMixin):
+    output = PLOT_TEXT
+    something = "X"
+
+
+class SVGPlotToValuePILTestCase(TextPILMixin, TestCase):
+    tclass = SVGPlotToValue
+
+
+class SVGZPlotViewPILTestCase(BinaryPILMixin, TestCase):
+    tclass = SVGZPlotView
+
+
+class PNGPlotViewPILTestCase(BinaryPILMixin, TestCase):
+    tclass = PNGPlotView
+
+
+class PNGBase64PlotToValuePILTestCase(BinaryPILMixin, TestCase):
+    tclass = PNGBase64PlotToValue
+
+
+class SVGZPlotToFilePILTestCase(BinaryPILMixin, TestCase):
+    tclass = SVGZPlotToFile
+    output = PLOT_BINARY
+
+
+class PNGPlotToFilePILTestCase(BinaryPILMixin, TestCase):
+    tclass = PNGPlotToFile
+    output = PLOT_BINARY
 
 
 # TEST Explotation

@@ -1,11 +1,52 @@
-import os
 from io import BytesIO
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.test.client import RequestFactory
 from plottings.views import BaseFileView, PNGPlotView, SVGZPlotView
 
 
-os.environ['DJANGO_SETTINGS_MODULE'] = "plottings.tests.test_settings"
+# os.environ['DJANGO_SETTINGS_MODULE'] = "test_app.settings"
+
+class TestBlackBox(TestCase):
+    def test_server(self):
+        client = Client()
+        response = client.get("/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_png_get(self):
+        client = Client()
+        response = client.get("/activity.png")
+        content = response.content
+        self.assertValidPNG(content)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Content-Length", response.headers)
+        self.assertNotEqual(response.headers["Content-Length"], 0)
+
+    def test_png_head(self):
+        client = Client()
+        response = client.head("/activity.png")
+        content = response.content
+        self.assertEqual(content, b"")
+
+    def test_svgz_get(self):
+        client = Client()
+        response = client.get("/activity.svgz")
+        content = response.content
+        self.assertValidSVG(content)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Content-Length", response.headers)
+        self.assertNotEqual(response.headers["Content-Length"], 0)
+
+    def test_svgz_head(self):
+        client = Client()
+        response = client.head("/activity.svgz")
+        content = response.content
+        self.assertEqual(content, b"")
+
+    def assertValidSVG(self, content):
+        pass
+
+    def assertValidPNG(self, content):
+        pass
 
 
 class TestViewMixin:
@@ -38,11 +79,23 @@ class TestViewMixin:
 
         self.view = MockView.as_view()
 
-    def test_value(self):
+    def test_get(self):
         request = RequestFactory().get("/" + self.filename)
         response = self.view(request)
         content = response.content
         self.assertEqual(content, self.output)
+        self.assertIn("Content-Length", response.headers)
+        self.assertEqual(response.headers["Content-Length"],
+                         str(len(self.output)))
+
+    def test_head(self):
+        request = RequestFactory().head("/" + self.filename)
+        response = self.view(request)
+        content = response.content
+        self.assertEqual(content, b"")
+        self.assertIn("Content-Length", response.headers)
+        self.assertEqual(response.headers["Content-Length"],
+                         str(len(self.output)))
 
 
 class TextFileViewTestCase(TestViewMixin, TestCase):
@@ -52,7 +105,7 @@ class TextFileViewTestCase(TestViewMixin, TestCase):
 
 class PNGPlotViewTestCase(TestViewMixin, TestCase):
     tclass = PNGPlotView
-    filename = "image.png"
+    filename = "activity.png"
     mimetype = "image/x-png"
     file_format = "png"
     output = b"\x00\x00\x00"
@@ -61,7 +114,7 @@ class PNGPlotViewTestCase(TestViewMixin, TestCase):
 class SVGPlotViewTestCase(TestViewMixin, TestCase):
     tclass = SVGZPlotView
     encoding = "gzip"
-    filename = "image.svgz"
+    filename = "activity.svgz"
     mimetype = "image/svg+xml"
     file_format = "svgz"
     output = b"\x00\x00\x00"

@@ -23,6 +23,7 @@ class BaseFileView(View):
     mimetype = ""
     http_method_names = [
             "get",
+            "head",
             "options",
     ]
 
@@ -94,9 +95,10 @@ class BaseFileView(View):
         This methods generates the GET response.
         """
         buffer = self.get_image()
+        headers = self.get_headers(buffer)
+
         response = self.http_response_class(b"",
                                             content_type=self.get_mimetype())
-        headers = self.get_headers(buffer)
         for key, value in headers.items():
             response.headers[key] = value
         return response

@@ -15,8 +15,6 @@ from plottings import (
 
 os.environ['DJANGO_SETTINGS_MODULE'] = "plottings.tests.test_settings"
 
-# TODO Patchear el django cache
-
 
 class MockFigure:
     def __init__(self, mock_image):
