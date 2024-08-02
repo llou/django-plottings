@@ -94,17 +94,15 @@ specialized in one type of output format and kind of rendering. Available
 formats are two: **SVG** and **PNG** and they can be rendered as **View**,
 **Value** or **File**, this gives us a family of six plotting classes: 
 
- - *PNGView*: A cached Django View class that returns a PNG
- - *SVGView*: A cached Django View class that returns an SVGZ file
- - *PNGFile*: Returns a Django File object containing a PNG image to be saved
-   to
-   storage. Useful to run it in background jobs.
- - *SVGFile*: Returnd a Django File object containing a SVGZ image to be saved
-   to
-   storage. Useful to run it in background jobs.
- - *PNGValue*: A cached python variable containing a plot object ready to be
+ - *PNGViewPlot*: A cached Django View class that returns a PNG.
+ - *SVGViewPlot*: A cached Django View class that returns an SVGZ file.
+ - *PNGFilePlot*: Returns a Django File object containing a PNG image to be
+   saved to storage. Useful to run it in background jobs.
+ - *SVGFilePlot*: Returnd a Django File object containing a SVGZ image to be
+   saved to storage. Useful to run it in background jobs.
+ - *PNGValuePlot*: A cached python variable containing a plot object ready to be
    rendered within a template as a PNG image encoded in *Base64*.
- - *SVGValue*: A cached python variable containing a plot object ready to be
+ - *SVGValuePlot*: A cached python variable containing a plot object ready to be
    rendered within a template as an inlined SVG image.
 
 These classes share all the same plotting methods that are:
