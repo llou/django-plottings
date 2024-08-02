@@ -98,7 +98,7 @@ formats are two: **SVG** and **PNG** and they can be rendered as **View**,
  - *SVGViewPlot*: A cached Django View class that returns an SVGZ file.
  - *PNGFilePlot*: Returns a Django File object containing a PNG image to be
    saved to storage. Useful to run it in background jobs.
- - *SVGFilePlot*: Returnd a Django File object containing a SVGZ image to be
+ - *SVGFilePlot*: Returns a Django File object containing a SVGZ image to be
    saved to storage. Useful to run it in background jobs.
  - *PNGValuePlot*: A cached python variable containing a plot object ready to be
    rendered within a template as a PNG image encoded in *Base64*.
