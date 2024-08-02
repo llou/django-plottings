@@ -34,7 +34,7 @@ class ActivityPlotMixin:
         self.map = self.activity_class(date.today())
         self.map.load_activity(self.random_activity())
 
-    def get_plot_kwargs(self):
+    def get_plot_options(self):
         return {"xticks": self.map.get_x_ticks(),
                 "yticks": self.map.get_y_ticks(),
                 }
@@ -61,8 +61,8 @@ class SVGZActivityPlot(ActivityPlotMixin, SVGZPlotView):
 
 def main(request):
     plots = Plot.objects.all()
-    context = {"svg_data": SVGPlot().get_value(),
-               "png_data": PNGPlot().get_value(),
+    context = {"svg_data": SVGPlot(),
+               "png_data": PNGPlot(),
                "plots": plots}
 
     return render(request, "main.html", context)

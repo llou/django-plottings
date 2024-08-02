@@ -7,24 +7,22 @@ from .views import (
         SVGZPlotView,
         CachedPNGPlotView,
         CachedSVGZPlotView,
-        PNGView,
-        SVGView,
+        PNGViewPlot,
+        SVGViewPlot,
         )
 from .value import (
         SVGPlotToValue,
         PNGBase64PlotToValue,
         CachedSVGPlotToValue,
         CachedPNGBase64PlotToValue,
-        SVGValue,
-        PNGValue,
+        SVGValuePlot,
+        PNGValuePlot,
         )
 from .file import (
         SVGZPlotToFile,
         PNGPlotToFile,
-        CachedSVGZPlotToFile,
-        CachedPNGPlotToFile,
-        SVGFile,
-        PNGFile,
+        SVGFilePlot,
+        PNGFilePlot,
         )
 
 __all__ = ["PNGPlotView",
@@ -35,16 +33,14 @@ __all__ = ["PNGPlotView",
            "PNGBase64PlotToValue"
            "CachedPNGPlotView",
            "CachedSVGZPlotView",
-           "CachedPNGPlotToFile",
-           "CachedSVGZPlotToFile",
            "CachedSVGPlotToValue",
            "PNGBase64PlotToValue"
-           "PNGView",
-           "SVGView",
-           "PNGFile",
-           "SVGFile",
-           "PNGValue",
-           "SVGValue",
+           "PNGViewPlot",
+           "SVGViewPlot",
+           "PNGFilePlot",
+           "SVGFilePlot",
+           "PNGValuePlot",
+           "SVGValuePlot",
            ]
 
 __version__ = "0.0.1"

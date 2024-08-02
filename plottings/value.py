@@ -28,9 +28,12 @@ class ValueMixin:
         Add the returned value of this method to the context dictionary that is
         passed to render the template.
         """
-        buffer = self.get_image()
-        value = buffer.getvalue()
+        image_buffer = self.get_image()
+        value = image_buffer.getvalue()
         return mark_safe(value)
+
+    def __str__(self):
+        return self.get_value()
 
 
 class Base64ValueMixin:
@@ -43,8 +46,8 @@ class Base64ValueMixin:
         Add the returned value of this method to the context dictionary that is
         passed to render the template.
         """
-        buffer = self.get_image()
-        value = buffer.getvalue()
+        image_buffer = self.get_image()
+        value = image_buffer.getvalue()
         return mark_safe(b64encode(value).decode("utf-8"))
 
 
@@ -84,5 +87,5 @@ class CachedPNGBase64PlotToValue(CachedMixin, Base64ValueMixin, PNGPlotMixin,
     pass
 
 
-SVGValue = CachedSVGPlotToValue
-PNGValue = CachedPNGBase64PlotToValue
+SVGValuePlot = CachedSVGPlotToValue
+PNGValuePlot = CachedPNGBase64PlotToValue

@@ -45,7 +45,7 @@ class BasePlot:
         """
         return {}
 
-    def get_plot_kwargs(self):
+    def get_plot_options(self):
         """
         Override this method to provide the plotter function with extra
         parameters to customize the graphical generation.
@@ -62,19 +62,19 @@ class BasePlot:
     @contextmanager
     def _get_figure(self):
         data = self.get_plot_data()
-        plot_kwargs = self.get_plot_kwargs()
-        figure = self.plotter_function(data, **plot_kwargs)
+        plot_options = self.get_plot_options()
+        figure = self.plotter_function(data, **plot_options)
         try:
             yield figure
         finally:
             plt.close(figure)
 
-    def process_image(self, image):
+    def process_image(self, image_buffer):
         """
         Override this method to add modifications to the image such as
         watermarks before caching.
         """
-        return image
+        return image_buffer
 
     def get_image(self):
         """

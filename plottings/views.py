@@ -142,5 +142,5 @@ class CachedSVGZPlotView(CachedMixin, SVGZPlotMixin, BaseFileView):
     mimetype = "image/svg+xml"
 
 
-SVGView = CachedSVGZPlotView
-PNGView = CachedPNGPlotView
+SVGViewPlot = CachedSVGZPlotView
+PNGViewPlot = CachedPNGPlotView

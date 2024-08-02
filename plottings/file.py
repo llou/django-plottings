@@ -8,7 +8,7 @@
 """
 
 from django.core.files import File as DjangoFile
-from .base import BasePlot, CachedMixin, SVGZPlotMixin, PNGPlotMixin
+from .base import BasePlot, SVGZPlotMixin, PNGPlotMixin
 
 
 class FileMixin:
@@ -53,21 +53,5 @@ class PNGPlotToFile(PNGPlotMixin, FileMixin, BasePlot):
     pass
 
 
-class CachedSVGZPlotToFile(CachedMixin, SVGZPlotMixin, FileMixin, BasePlot):
-    """
-    This class is used to create a Django a ``File`` object storing an SVGZ
-    plot. Cached Version.
-    """
-    pass
-
-
-class CachedPNGPlotToFile(CachedMixin, PNGPlotMixin, FileMixin, BasePlot):
-    """
-    This class is used to create a Django a ``File`` object storing a PNG plot.
-    Cached Version.
-    """
-    pass
-
-
-SVGFile = CachedSVGZPlotToFile
-PNGFile = CachedPNGPlotToFile
+SVGFilePlot = SVGZPlotToFile
+PNGFilePlot = PNGPlotToFile

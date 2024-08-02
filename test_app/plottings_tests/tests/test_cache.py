@@ -9,8 +9,6 @@ from plottings import (
         CachedSVGZPlotView,
         CachedSVGPlotToValue,
         CachedPNGBase64PlotToValue,
-        CachedSVGZPlotToFile,
-        CachedPNGPlotToFile,
         )
 
 os.environ['DJANGO_SETTINGS_MODULE'] = "plottings.tests.test_settings"
@@ -94,11 +92,3 @@ class SVGPlotToValueTestCase(CacheTestMixin, TestCase):
 
 class PNGBase64PlotToValueTestCase(CacheTestMixin, TestCase):
     tclass = CachedPNGBase64PlotToValue
-
-
-class SVGZPlotToFileTestCase(CacheTestMixin, TestCase):
-    tclass = CachedSVGZPlotToFile
-
-
-class PNGPlotToFileTestCase(CacheTestMixin, TestCase):
-    tclass = CachedPNGPlotToFile
