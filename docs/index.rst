@@ -2,124 +2,81 @@
 Django-Plottings Documentation
 ==============================
 
-Django-Plottings is a library that merge two of the most emblematic Python
-projects by proposing three means of generating graphics from the data provided
-by the web applications framework:
+.. toctree::
+   :maxdepth: 1
 
- - A ``View`` object to serve the plots as files. 
- - A ``value`` variable to be passed to the template framework to integrate the
-   plots within HTML documents.
- - A Django ``File`` object to be stored in a media folder to be accessed later.
+   tutorials
+   reference
+   development
+
+Introduction
+------------
+
+Django Plottings is a library for using Matplotlib_ graphing library within the
+`Django Web Framework`_. It can be used to produce plots in three different
+ways:
+
+.. _Matplotlib: https://matplotlib.org/stable/
+.. _Django Web Framework: https://www.djangoproject.com/
+
+ - As a **view** that responds to clients request, to serve the plot alone.
+ - As a **value** to be inserted in a web page template, to serve the plot as part 
+   of a webpage.
+ - As a **file** saved to storage for background processing.
 
 The idea behind this project is to provide a fast way to go from data analysis
-using a Jupyter Notebook to a production environment using the Django
-framework.
+to production using Django framework, proposing an opinionated way of building
+the graphs similar to those of Django class based views. The lifecycle of the
+graph is as follows:
 
-It can be used also in combination with Alpine.js_, htmlx_ or Unpoly_ as a
-substitution for client side graphics rendering, to provide some interactivity
-in the plotting of data. 
+.. .. image:: steps.svg
 
-.. _Alpine.js: https://alpinejs.dev
-.. _htmlx: https://htmlx.org
-.. _Unpoly: https://unpoly.com
+It includes integration with the Django cache so plots don't need to be
+regenerated every time the same graph is requested. It also provides an step
+for post processing the graphs after rendering but before caching to add a
+watermark or whatever.
 
-Other great advantage of server side rendering of images is that the plot data
-never leaves the machine so it can't be scrapped.
+This tool is focused in high-quality rendering graphics, it is not a very
+performant solution, if you need high speed rendering there are other tools
+more suitable for this purpose.
 
-It renders graphics in two different formats PNG and SVG, the first a concise
-but not much precise way of storing images, the second much more precise in the
-details but heavier.
+Server Side Rendering
+---------------------
 
-Good Practices
---------------
+This solution build the graphics on the server an alternative to rendering
+graphs in the browser and this has its advantages:
 
-It's a good idea to have the code split in various files in the Django app
-directory. The matplotlib code in a ``plots.py`` file and the Pandas or data
-procesing in ``data.py``. Remember to disable the screen mode by inserting
-``matplotlib.use("Agg")`` in the header of the ``plots.py`` file.
+ - Data never leves the server.
+ - More resources available for rendering.
+ - No need for front end programing.
+ - No need for a full featured web browser for rendering.
 
-Base Classes
-------------
-
-Django-Plottings is intended to work in a similar manner of the Django class 
-based views by subclassing and overriding methods that provide the functionality
-required to build the plots.
-
-The commom methods to be subclassed are:
-
- - ``get_data()``: That contain all the logic required to provide
-   ``plotter_function`` with data.
-
- - ``get_kwargs()``: That provide the plotting function with extra parameters
-   for customizing the way the plot is built.
-
- - ``plotter_function()``: That gets the data and the parameters and returns a
-   figure object ready to be dumped in the formats required by the building
-   class.
+And its drawbacks:
+ 
+ - More computing power to render the requests.
+ - More memory required for each server thread.
+ - Non interactive graphs.
 
 
-View Classes
-------------
-
-These classes are a mixture of Django views and Plottings base object so
-parameters are added to the class by the ``setup()`` method and accesible from
-the class instance.
-
-They work as other class based view by passing the to the ``path()`` function
-calling the ``as_view()`` method.
-
-PNGPlotView
-^^^^^^^^^^^
-
-.. autoclass:: plottings.PNGPlotView
-   :members:
-   :inherited-members:
-
-SVGZPlotView
-^^^^^^^^^^^^
-
-.. autoclass:: plottings.SVGZPlotView
-   :members:
-   :inherited-members:
-
-File Classes
-------------
-
-These two classes are intended to be initiallized and then to proceed to call
-the ``get_file()`` method that returns a Django file object ready to be assigned
-to a Django ImageField for saving and storing the data in a media folder.
-
-PNGPlotToFile
-^^^^^^^^^^^^^
-
-.. autoclass:: plottings.PNGPlotToFile
-   :members:
-   :inherited-members:
-
-SVGZPlotToFile
-^^^^^^^^^^^^^^
-
-.. autoclass:: plottings.SVGZPlotToFile
-   :members:
-   :inherited-members:
-
-Value Classes
+Compatibility
 -------------
 
-Both classes work the same way: first initialization of the class for then call
-the ``get_value()`` method that returns a variable intended to be passed to the
-Django Template System to render the webpage with the image included.
+This module currently supports two file formats PNG and SVG.  The compatibility
+is not fully checked, it runs with the lastest versions of Django 5.0, Numpy
+2.0, Matplotlib 3.9 and Python 3.12.4.
 
-PNGBase64PlotToValue
-^^^^^^^^^^^^^^^^^^^^
+It has been tested in Linux and Mac OS environments but should run on Windows
+as well.
 
-.. autoclass:: plottings.PNGBase64PlotToValue
-   :members:
-   :inherited-members:
+About
+-----
 
-SVGPlotToValue
-^^^^^^^^^^^^^^
+This is project is originated as a side project of `Jorge Monforte González`_.
 
-.. autoclass:: plottings.SVGPlotToValue
-   :members:
-   :inherited-members:
+.. _Jorge Monforte González: yo@llou.net
+
+Project pages:
+
+ - Github: https://github.com/llou/django-plottings
+ - PyPI: https://pypi.org/project/django-plottings/
+ - Documentation: https://django-plottings.readthedocs.io/en/latest/
