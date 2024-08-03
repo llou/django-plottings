@@ -1,6 +1,7 @@
 # Django-Plottings
 
 ![Read the Docs](https://img.shields.io/readthedocs/django-plottings)
+[![Python package](https://github.com/llou/django-plottings/actions/workflows/test.yml/badge.svg)](https://github.com/llou/django-plottings/actions/workflows/test.yml)
 
 A library to generate [Matplotlib](https://matplotlib.org/stable/) graphics
 within [Django](https://www.djangoproject.com/) applications.
