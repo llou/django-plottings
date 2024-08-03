@@ -49,7 +49,7 @@ class TestBlackBox(TestCase):
         pass
 
 
-class TestViewMixin:
+class ViewMixin:
     tclass = BasePlotView
     buffer_class = BytesIO
     filename = ""
@@ -98,12 +98,12 @@ class TestViewMixin:
                          str(len(self.output)))
 
 
-class TextFileViewTestCase(TestViewMixin, TestCase):
+class TextFileViewTestCase(ViewMixin, TestCase):
     filename = "text.txt"
     file_format = "txt"
 
 
-class PNGPlotViewTestCase(TestViewMixin, TestCase):
+class PNGPlotViewTestCase(ViewMixin, TestCase):
     tclass = PNGPlotView
     filename = "activity.png"
     mimetype = "image/x-png"
@@ -111,7 +111,7 @@ class PNGPlotViewTestCase(TestViewMixin, TestCase):
     output = b"\x00\x00\x00"
 
 
-class SVGPlotViewTestCase(TestViewMixin, TestCase):
+class SVGPlotViewTestCase(ViewMixin, TestCase):
     tclass = SVGZPlotView
     encoding = "gzip"
     filename = "activity.svgz"
