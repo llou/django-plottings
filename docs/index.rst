@@ -5,9 +5,9 @@ Django-Plottings Documentation
 .. toctree::
    :maxdepth: 1
 
-   tutorials
+   userguide
+   contributing
    reference
-   development
 
 Introduction
 ------------
