@@ -1,7 +1,6 @@
 # Django-Plottings
 
-![https://img.shields.io/readthedocs/django-plottings]()
-
+![Read the Docs](https://img.shields.io/readthedocs/django-plottings)
 
 A library to generate [Matplotlib](https://matplotlib.org/stable/) graphics
 within [Django](https://www.djangoproject.com/) applications.
