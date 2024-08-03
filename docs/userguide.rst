@@ -1,6 +1,6 @@
 
-Tutorial
-========
+User Guide
+==========
 
 .. contents::
    :local:

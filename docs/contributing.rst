@@ -1,6 +1,6 @@
 
-Development
-===========
+Contributing
+============
 
 .. contents::
    :local:
