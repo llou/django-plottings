@@ -1,5 +1,8 @@
 # Django-Plottings
 
+![https://img.shields.io/readthedocs/django-plottings]()
+
+
 A library to generate [Matplotlib](https://matplotlib.org/stable/) graphics
 within [Django](https://www.djangoproject.com/) applications.
 
@@ -16,7 +19,8 @@ The library provides three different ways to use the rendered graphics:
 
  - as a view to be served as a standalone graphics file
  - as a text variable to be rendered within a webpage 
- - as a file to be saved and served lately
+ - as a file to be saved and served lately useful for background task
+   geneartion.
 
 ## Example
 
