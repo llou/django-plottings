@@ -6,17 +6,24 @@ build-backend = "flit_core.buildapi"
 name = "django-plottings"
 authors = [{name = "Jorge Monforte Gonzalez", email = "yo@llou.net"}]
 readme = "README.md"
-dynamic = ["version", "description"]
+description = "A library to generate Matplotlib graphics within Django applications"
+dynamic = ["version"]
 classifiers = [
 	"Development Status :: 3 - Alpha",
 	"Environment :: Web Environment",
 	"License :: OSI Approved :: BSD License",
+    "Programming Language :: Python"
     "Programming Language :: Python :: 3"
+    "Programming Language :: Python :: 3.8"
+    "Programming Language :: Python :: 3.9"
+    "Programming Language :: Python :: 3.10"
+    "Programming Language :: Python :: 3.11"
+    "Programming Language :: Python :: 3.12"
 ]
 dependencies = [
-    "django",
-    "numpy",
-    "matplotlib",
+    "django>=3.2",
+    "numpy>=1.2",
+    "matplotlib>=3.8",
 ]
 
 [project.urls]
