@@ -1,7 +1,7 @@
 from io import BytesIO
 from django.test import TestCase, Client
 from django.test.client import RequestFactory
-from plottings.views import BaseFileView, PNGPlotView, SVGZPlotView
+from plottings.views import BasePlotView, PNGPlotView, SVGZPlotView
 
 
 # os.environ['DJANGO_SETTINGS_MODULE'] = "test_app.settings"
@@ -50,7 +50,7 @@ class TestBlackBox(TestCase):
 
 
 class TestViewMixin:
-    tclass = BaseFileView
+    tclass = BasePlotView
     buffer_class = BytesIO
     filename = ""
     mimetype = "text/plain"

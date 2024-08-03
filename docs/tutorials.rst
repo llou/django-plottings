@@ -8,9 +8,11 @@ Tutorial
 KickStart
 ---------
 
-Lets see how to insert a simple Matplotlib graph in a webpage using Django
-Plottings.  Use the command ``pip`` to install the package to your local
-development environment:
+Lets see how to insert a simple Matplotlib graph in an existing Django webpsite
+using Plottings.
+
+First, use the command ``pip`` to install the package to your local development
+environment:
 
 .. code::
 
@@ -44,7 +46,7 @@ Then create the class that renders the plot:
 .. code:: python
 
     class SimplePlotToValue(PNGValuePlot):
-        def plotter_function(self, data, **kwargs):
+        def plotter_function(self, data, **options):
             np.random.seed(2)
             fig, ax = plt.subplots()
             ax.plot(np.random.rand(20), '-o', ms=20, lw=2, alpha=0.7,
@@ -59,12 +61,12 @@ Setup the template ``plot.html`` in your apps template directory:
 
 .. code::
 
-      ...
+      <html>
       <body>
         <h1>My plot</h1>
         {{ plot }}
       </body>
-      ...
+      </html>
 
 And finally add a route to your plot view in your apps ``url.py``
 
@@ -94,17 +96,15 @@ specialized in one type of output format and kind of rendering. Available
 formats are two: **SVG** and **PNG** and they can be rendered as **View**,
 **Value** or **File**, this gives us a family of six plotting classes: 
 
- - *PNGView*: A cached Django View class that returns a PNG
- - *SVGView*: A cached Django View class that returns an SVGZ file
- - *PNGFile*: Returns a Django File object containing a PNG image to be saved
-   to
-   storage. Useful to run it in background jobs.
- - *SVGFile*: Returnd a Django File object containing a SVGZ image to be saved
-   to
-   storage. Useful to run it in background jobs.
- - *PNGValue*: A cached python variable containing a plot object ready to be
+ - *PNGViewPlot*: A cached Django View class that returns a PNG. 
+ - *SVGViewPlot*: A cached Django View class that returns an SVGZ file.
+ - *PNGFilePlot*: Builds a Django File object containing a PNG image to be
+   saved to storage. Useful to run it in background jobs.
+ - *SVGFilePlot*: Builds a Django File object containing a SVGZ image to be
+   saved to storage. Useful to run it in background jobs.
+ - *PNGValuePlot*: A cached python variable containing a plot object ready to be
    rendered within a template as a PNG image encoded in *Base64*.
- - *SVGValue*: A cached python variable containing a plot object ready to be
+ - *SVGValuePlot*: A cached python variable containing a plot object ready to be
    rendered within a template as an inlined SVG image.
 
 These classes share all the same plotting methods that are:
@@ -128,8 +128,8 @@ the ``get_plot_data()`` and collect the options with ``get_plot_options()``.
 These steps might be different in a **View** class than in the **Value** and
 **File** classes.
 
-How to build a View
--------------------
+Plotting to a View
+------------------
 
 Django Views are initialized each request and values are stored in the object
 as the object attributes ``request``, ``args``, ``kwargs``. So the methods
@@ -148,8 +148,8 @@ attributes to build a response plot.
             return [ x.date for x in activities ]
         
 
-How to build a Value
---------------------
+Plotting to a Value
+-------------------
 
 The **Value** class should be declared with the ``__init__()`` initialization
 method with the parameters needed to set the object attributes required by
@@ -182,8 +182,8 @@ to the template as another value to be rendered.
         return render(request, "activities.html", {"a_plot": a_plot})
 
 
-How to build and Save a File
-----------------------------
+Plotting to a File
+------------------
 
 The **File** class should be declared with the ``__init__()`` initialization
 method with the parameters needed to set the object attributes required by
@@ -228,7 +228,7 @@ your plot and to set the timeout you have to set the class attribute
 .. code:: python
 
     class ActivitiesPlot(PNGViewPlot):
-        cache_timeout = 60 * 60 * 24
+        cache_timeout = 60 * 60 * 24 # Reload every 24h
 
         def get_cache_key(self):
             return f"activities_plot_{self.request.user.id}"

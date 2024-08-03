@@ -3,8 +3,8 @@
     views.py
     ========
 
-    This module provides with View classes that return HttpResponse objects
-    with Matplotlib figures as payload.
+    This module provides with a collection of Django View classes that respond
+    to requests with HttpResponse objects with Matplotlib figures as payload.
 
 """
 from typing import Any
@@ -13,7 +13,12 @@ from django.http import HttpResponse
 from .base import CachedMixin, SVGZPlotMixin, PNGPlotMixin
 
 
-class BaseFileView(View):
+class BasePlotView(View):
+    """
+    A Django View class that has the common logic of all project's View
+    classes. It is not intended to be used in production but instead to be
+    subclassed and extended via mixins.
+    """
     http_response_class = HttpResponse
     buffer_class: Any = None
     file_format = ""
@@ -92,7 +97,7 @@ class BaseFileView(View):
 
     def head(self, request, *args, **kwargs):
         """
-        This methods generates the GET response.
+        This methods generates the HEAD response.
         """
         buffer = self.get_image()
         headers = self.get_headers(buffer)
@@ -104,7 +109,7 @@ class BaseFileView(View):
         return response
 
 
-class PNGPlotView(PNGPlotMixin, BaseFileView):
+class PNGPlotView(PNGPlotMixin, BasePlotView):
     """
     A Django ``View`` class that returns a PNG graphic file as ``HttpResponse``
     payload.
@@ -113,7 +118,7 @@ class PNGPlotView(PNGPlotMixin, BaseFileView):
     mimetype = "image/png"
 
 
-class SVGZPlotView(SVGZPlotMixin, BaseFileView):
+class SVGZPlotView(SVGZPlotMixin, BasePlotView):
     """
     A Django `View` class that returns a SVGZ graphic file as `HttpResponse`
     payload.
@@ -123,7 +128,7 @@ class SVGZPlotView(SVGZPlotMixin, BaseFileView):
     mimetype = "image/svg+xml"
 
 
-class CachedPNGPlotView(CachedMixin, PNGPlotMixin, BaseFileView):
+class CachedPNGPlotView(CachedMixin, PNGPlotMixin, BasePlotView):
     """
     A Django ``View`` class that returns a PNG graphic file as ``HttpResponse``
     payload.
@@ -132,7 +137,7 @@ class CachedPNGPlotView(CachedMixin, PNGPlotMixin, BaseFileView):
     mimetype = "image/png"
 
 
-class CachedSVGZPlotView(CachedMixin, SVGZPlotMixin, BaseFileView):
+class CachedSVGZPlotView(CachedMixin, SVGZPlotMixin, BasePlotView):
     """
     A Django `View` class that returns a SVGZ graphic file as `HttpResponse`
     payload.

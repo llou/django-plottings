@@ -14,15 +14,15 @@ required to build the plots.
 
 The commom methods to be subclassed are:
 
- - ``get_data()``: That contain all the logic required to provide
+ - ``get_plot_data()``: That contain all the logic required to provide
    ``plotter_function`` with data.
 
- - ``get_kwargs()``: That provide the plotting function with extra parameters
-   for customizing the way the plot is built.
+ - ``get_plot_options()``: That provide the plotting function with extra
+   parameters for customizing the way the plot is built.
 
- - ``plotter_function()``: That gets the data and the parameters and returns a
-   figure object ready to be dumped in the formats required by the building
-   class.
+ - ``plotter_function(data, **options)``: That gets the data and the parameters
+   and returns a figure object ready to be dumped in the formats required by
+   the building class.
 
 View Classes
 ------------

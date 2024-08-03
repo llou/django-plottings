@@ -20,7 +20,8 @@ from .base import (
 class ValueMixin:
     """
     This mixins provides ``BasePlot`` with the ``get_value()`` method that
-    returns a safe string to be used inside a template.
+    returns a safe string to be used inside a template. It also has the magic
+    method ``__str__.py`` so it can be inyected to the template.
     """
 
     def get_value(self):
@@ -39,7 +40,9 @@ class ValueMixin:
 class Base64ValueMixin:
     """
     This mixin provides the ``BasePlot`` class with base64 encoding of its
-    provided value through ``get_value()`` method.
+    provided value through ``get_value()`` method. It also has the magic
+    method ``__str__.py`` so it can be inyected to the template.
+
     """
     def get_value(self):
         """

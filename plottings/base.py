@@ -3,10 +3,15 @@
     base.py
     =======
 
-    This module contains most of the basic classes used in generating the
-    plots and dumping them into file object or variables to be lately used
-    in Django.
+    This module contains the basic classes used for building the actual classes
+    that are used in generating the plots. It is structured around a base class
+    called ``BasePlot`` that implements the common logic required for the
+    project operations with some mixin_ classes to add it extra functionality
+    by multiple inheritance.
+
+    .. _mixin: https://en.wikipedia.org/wiki/Mixin
 """
+
 from typing import Any
 from io import BytesIO, StringIO
 from contextlib import contextmanager
@@ -89,6 +94,9 @@ class BasePlot:
 
 
 class CachedMixin:
+    """
+    Mixin class to add cache functionality to the BasePlot object.
+    """
     cache_backend_name = "default"
     cache_timeout = -1
 
