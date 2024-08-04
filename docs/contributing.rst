@@ -11,27 +11,38 @@ is at Github_.
 .. _Github: https://github.com/llou/django-plottings
 
 
-Code Structure
---------------
+Class Architecture
+------------------
+The classes in this project are built by composing a base class, ``BasePlot``
+with different mixins to in the end provide full featured classes ready for
+production.
 
 .. automodule:: plottings.base
 
 .. autoclass:: plottings.base.BasePlot
+   :members:
 .. autoclass:: plottings.base.CachedMixin
+   :members:
 .. autoclass:: plottings.base.SVGPlotMixin
+   :members:
 .. autoclass:: plottings.base.SVGZPlotMixin
+   :members:
 .. autoclass:: plottings.base.PNGPlotMixin
+   :members:
 
 .. automodule:: plottings.views
 .. autoclass:: plottings.views.BasePlotView
-.. autoclass:: plottings.views.CachedMixin
+   :members:
 
 .. automodule:: plottings.value
 .. autoclass:: plottings.value.ValueMixin
+   :members:
 .. autoclass:: plottings.value.Base64ValueMixin
+   :members:
 
 .. automodule:: plottings.file
 .. autoclass:: plottings.file.FileMixin
+   :members:
 
 Testing Application
 -------------------
