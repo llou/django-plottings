@@ -48,12 +48,19 @@ class BasePlot:
         Override this method to provide data to ``plotter_function()``
         method.
         """
-        return {}
+        return []
 
     def get_plot_options(self):
         """
         Override this method to provide the plotter function with extra
         parameters to customize the graphical generation.
+        """
+        return {}
+
+    def get_save_options(self):
+        """
+        Override this method to provide get_image function with extra
+        parameters to set file properties.
         """
         return {}
 
@@ -86,8 +93,9 @@ class BasePlot:
         Returns a in memory file object with the plot image.
         """
         image_buffer = self.buffer_class()
+        options = self.get_save_options()
         with self._get_figure() as figure:
-            figure.savefig(image_buffer, format=self.get_filetype())
+            figure.savefig(image_buffer, format=self.get_filetype(), **options)
         image_buffer = self.process_image(image_buffer)
         image_buffer.seek(0)
         return image_buffer
