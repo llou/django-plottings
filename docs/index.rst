@@ -26,8 +26,9 @@ ways:
 
 The idea behind this project is to provide a fast way to go from data analysis
 to production using Django framework, proposing an opinionated way of building
-the graphs similar to those of Django class based views. The lifecycle of the
-graph is as follows:
+the graphs similar to those of Django class based views.
+
+.. The lifecycle of the graph is as follows:
 
 .. .. image:: steps.svg
 
