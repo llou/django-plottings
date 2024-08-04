@@ -39,7 +39,6 @@ class PlotView(PNGViewPlot):
 
     @staticmethod
     def plotter_function(data, color="orange"):
-        np.random.seed(2)
         fig, ax = plt.subplots()
         ax.plot(data, '-o', ms=20, lw=2, alpha=0.7, mfc=color)
         ax.grid()
