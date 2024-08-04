@@ -32,7 +32,7 @@ from plottings import PNGViewPlot
 
 class PlotView(PNGViewPlot):
     def get_plot_data(self):
-        return [(x.date, x.words) for x in Doc.objects.all()]
+        return np.random.rand(20)
 
     def get_plot_options(self):
         return {"color": "blue"}
@@ -41,8 +41,7 @@ class PlotView(PNGViewPlot):
     def plotter_function(data, color="orange"):
         np.random.seed(2)
         fig, ax = plt.subplots()
-        ax.plot(np.random.rand(20), '-o', ms=20, lw=2, alpha=0.7,
-                mfc=color)
+        ax.plot(data, '-o', ms=20, lw=2, alpha=0.7, mfc=color)
         ax.grid()
         return figure
 ```
