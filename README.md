@@ -22,16 +22,17 @@ The library provides three different ways to use the rendered graphics:
  - as a file to be saved and served lately useful for background task
    geneartion.
 
-## Example
-
-How to create a Django view that returns a PNG file with the plot. In the
+To create a Django view that returns a PNG file with the plot. In the
 `views.py` file:
 
 ```python
+...
+from plottings import PNGViewPlot
+...
 
-class PlotView(PNGPlotView):
+class PlotView(PNGViewPlot):
     def get_plot_data(self):
-        return [(x.date, x.words) for x in Docs.objects.all()]
+        return [(x.date, x.words) for x in Doc.objects.all()]
 
     def get_plot_options(self):
         return {"color": "blue"}
@@ -56,12 +57,6 @@ urlpatterns = [
     ]
 ```
 
-## Good practices
-
-Remember to disable graphics displays with `matplotlib.use('Agg')` in the
-header of the plots file.
-
-## Links
 - Python [PyPi](https://pypi.org/project/django-plottings/) Package
 - [Documentation](https://django-plottings.readthedocs.io/en/latest/) in [Read
   the Docs](https://about.readthedocs.com/).
