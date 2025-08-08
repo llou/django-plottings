@@ -1,17 +1,19 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
+[tool.poetry]
 name = "django-plottings"
-authors = [{name = "Jorge Monforte Gonzalez", email = "yo@llou.net"}]
-readme = "README.md"
+version = "0.0.3"
 description = "A library to generate Matplotlib graphics within Django applications"
-dynamic = ["version"]
+authors = ["Jorge Monforte Gonzalez <yo@llou.net>"]
+readme = "README.md"
+license = "BSD-3-Clause"
+packages = [{include = "plottings"}]
 classifiers = [
-	"Development Status :: 3 - Alpha",
-	"Environment :: Web Environment",
-	"License :: OSI Approved :: BSD License",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.9",
@@ -19,15 +21,77 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-dependencies = [
-    "django>=3.2.0",
-    "numpy>=1.26.0",
-    "matplotlib>=3.8.0",
+keywords = ["django", "matplotlib", "plotting", "graphics", "web"]
+homepage = "https://github.com/llou/django-plottings"
+documentation = "https://django-plottings.readthedocs.io/en/latest/"
+repository = "https://github.com/llou/django-plottings"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.2.0"
+numpy = "^1.26.0"
+matplotlib = "^3.8.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+pytest-django = "^4.8.0"
+pytest-cov = "^4.0.0"
+tox = "^4.0.0"
+black = "^24.0.0"
+flake8 = "^7.0.0"
+isort = "^5.13.0"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "*"
+sphinx-rtd-theme = "*"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/llou/django-plottings/issues"
+"Home" = "https://github.com/llou/django-plottings"
+"Documentation" = "https://django-plottings.readthedocs.io/en/latest/"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "test_app.settings"
+pythonpath = [".", "test_app"]
+testpaths = ["test_app/plottings_tests/tests"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 100
+target-version = ['py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203", "W503", "F401"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "*.egg-info",
+    ".venv",
+    ".tox",
 ]
-
-[project.urls]
-Home = "https://github.com/llou/django-plottings"
-Documentation = "https://django-plottings.readthedocs.io/en/latest/"
-
-[tool.flit.module]
-name  = "plottings"

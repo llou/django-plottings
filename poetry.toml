@@ -1,0 +1,11 @@
+[virtualenvs]
+create = true
+in-project = false
+prefer-active-python = true
+
+[build]
+generate-setup-file = false
+
+[tool.poetry.scripts]
+test = "pytest:main"
+docs = "sphinx:main"

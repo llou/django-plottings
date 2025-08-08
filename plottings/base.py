@@ -25,6 +25,7 @@ class BasePlot:
     basic protocol that gathers the data, draws the graph and passes it to an
     in memory file like object ready to be consumed.
     """
+
     buffer_class: Any = BytesIO
     file_format = ""
 
@@ -59,7 +60,7 @@ class BasePlot:
 
     def get_filetype(self):
         """
-        Override this method to dinamically set the file format of the
+        Override this method to dynamically set the file format of the
         generated file.
         """
         return self.file_format
@@ -97,6 +98,7 @@ class CachedMixin:
     """
     Mixin class to add cache functionality to the BasePlot object.
     """
+
     cache_backend_name = "default"
     cache_timeout = -1
 
@@ -121,13 +123,16 @@ class CachedMixin:
                 cache_backend.set(cache_key, image_value, self.cache_timeout)
             return image_file
         else:
-            return self.buffer_class(image_value)
+            buffer = self.buffer_class(image_value)
+            buffer.seek(0)
+            return buffer
 
 
 class SVGPlotMixin(BasePlot):
     """
-    Mixing to generate a memory file containing an SVG figure.
+    Mixin to generate a memory file containing an SVG figure.
     """
+
     buffer_class = StringIO
     file_format = "svg"
 
@@ -136,6 +141,7 @@ class SVGZPlotMixin(BasePlot):
     """
     Mixin to generate a memory file containing an SVGZ figure.
     """
+
     buffer_class = BytesIO
     file_format = "svgz"
 
@@ -144,5 +150,6 @@ class PNGPlotMixin(BasePlot):
     """
     Mixin to generate a memory file containing a binary PNG figure.
     """
+
     buffer_class = BytesIO
     file_format = "png"

@@ -22,6 +22,38 @@ The library provides three different ways to use the rendered graphics:
  - as a file to be saved and served lately useful for background task
    geneartion.
 
+## Installation
+
+### Using Poetry (Recommended)
+
+This project uses [Poetry](https://python-poetry.org/) for dependency management.
+
+```bash
+# Install Poetry if you haven't already
+curl -sSL https://install.python-poetry.org | python3 -
+
+# Clone the repository
+git clone https://github.com/llou/django-plottings.git
+cd django-plottings
+
+# Install dependencies
+poetry install
+
+# Run tests
+poetry run pytest
+
+# Activate the virtual environment
+poetry shell
+```
+
+### Using pip
+
+```bash
+pip install django-plottings
+```
+
+## Usage
+
 To create a Django view that returns a PNG file with the plot. In the
 `views.py` file:
 
@@ -54,6 +86,27 @@ urlpatterns = [
     ...
     ]
 ```
+
+## Development
+
+### Running Tests
+
+```bash
+# Using Poetry
+poetry run pytest
+
+# Using tox (for multiple Python/Django versions)
+poetry run tox
+```
+
+### Building Documentation
+
+```bash
+# Using Poetry
+poetry run sphinx-build -W -b html docs docs/_build/html
+```
+
+## Links
 
 - Python [PyPi](https://pypi.org/project/django-plottings/) Package
 - [Documentation](https://django-plottings.readthedocs.io/en/latest/) in [Read

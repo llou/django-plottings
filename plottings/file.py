@@ -16,12 +16,13 @@ class FileMixin:
     This mixin provides the ``BasePlot`` class with the capability of
     generating a in memory file to be passed to an Image field.
     """
+
     file_class = DjangoFile
     filename = ""
 
     def get_filename(self):
         """
-        Override this method to dinamically change the name of the file object
+        Override this method to dynamically change the name of the file object
         created by the ``get_file()`` method.
         """
         name = self.filename
@@ -40,16 +41,18 @@ class FileMixin:
 
 class SVGZPlotToFile(SVGZPlotMixin, FileMixin, BasePlot):
     """
-    This class is used to create a Django a ``File`` object storing an SVGZ
+    This class is used to create a Django ``File`` object storing an SVGZ
     plot.
     """
+
     pass
 
 
 class PNGPlotToFile(PNGPlotMixin, FileMixin, BasePlot):
     """
-    This class is used to create a Django a ``File`` object storing a PNG plot.
+    This class is used to create a Django ``File`` object storing a PNG plot.
     """
+
     pass
 
 
