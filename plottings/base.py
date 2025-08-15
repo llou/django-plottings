@@ -29,7 +29,7 @@ class BasePlot:
     file_format = ""
 
     @staticmethod
-    def plotter_function(data, **kwargs):
+    def plotter_function(data, **options):
         """
         Override this method with an **statically linked function** that
         returns a Matplotlib figure to be lately used to render the plot
@@ -38,7 +38,7 @@ class BasePlot:
         :data: A data structure that contains the information to be graphically
             modeled by the plotter function.
 
-        :kwargs: A dict of parameters used to customize the image rendering.
+        :options: A dict of parameters used to customize the image rendering.
 
         """
         raise NotImplementedError("Plot class requires a plotter method")
@@ -94,8 +94,9 @@ class BasePlot:
         """
         image_buffer = self.buffer_class()
         options = self.get_save_options()
+        options["format"] = self.get_filetype()
         with self._get_figure() as figure:
-            figure.savefig(image_buffer, format=self.get_filetype(), **options)
+            figure.savefig(image_buffer, **options)
         image_buffer = self.process_image(image_buffer)
         image_buffer.seek(0)
         return image_buffer
